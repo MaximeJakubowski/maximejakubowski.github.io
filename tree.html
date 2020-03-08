@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>A Racket Tree</title>
+    </head>
+    <body>
+	<header>A Racket Tree</header>
+	<main>
+	  <h1>Recursive Tree</h1>
+	  <p>This page is just a link to my simple implementation of a recursive tree computer program. The recursive tree is defined as a V shape, or a V shape on top of the two ends of the previous V. This leads to some nice trees. It is obviously not meant to draw a natural looking tree. It was just fun to make this program and play with the parameters.</p>
+
+	  <p>The conceptual parameters that alter the tree are roughly the following:
+	    <dl>
+	      <dt>Depth</dt>
+	      <dd>How deep the tree goes. The depth of a single V shape is 1.</dd>
+	      <dt>Branch length</dt>
+	      <dd>The length of the two branches at depth 1.</dd>
+	      <dt>Branch separation angle</dt>
+	      <dd>How much is the angle between the two branches at depth 1.</dd>
+	      <dt>Branch length decay</dt>
+	      <dd>The decay of the branch length defines the length of a branch at depth n (starting at depth 2). The length of a branch at depth n is the length of a branch at depth n-1 times the value of the branch length decay. The idea is that the decay value is between 0 and 1. The branches get smaller at every depth level.</dd>
+	      <dt>Separation angle decay</dt>
+	      <dd>Same idea as the branch length decay but on the separation angle. The idea is that the angle gets bigger of smaller at every depth.</dd>
+	      <dt>Tree rotation</dt>
+	      <dd>The tree rotation value is the angle of a V shape from depth 2 and deeper. The angle is relative to the angle of the V shape of depth n-1.</dd>
+	    </dl>
+	  The correct implementation parameters can be found on the Github page.</p>
+
+	  <h1>Implementation</h1>
+	  <p>The program code is written in the <a href="https://racket-lang.org/">Racket programming language</a>. It can be found on <a href="https://github.com/MaximeJakubowski/a-racket-tree">my Github page</a>. It is implemented as a recursive function (depth first). This may not be the most efficient way but I like it. </p>
+	  <p>A tree is a list of lines. A line is a structure with two points. A point is a structure with two numbers representing 2D coordinates.</p>
+	  <p>I included a simple GUI so you can play with the parameters :). The naming of the parameters may not be consistent. I made them up as I went writing the program, the Github README and this webpage.</p>
+	  
+	</main>
+	<footer>
+	    <p>Page last updated <time datetime="2020-03">March 2020</time> by Maxime Jakubowski.</p>
+	</footer>
+    </body>
+</html>
