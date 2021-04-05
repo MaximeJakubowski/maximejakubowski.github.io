@@ -1,12 +1,46 @@
+@font-face {
+    font-family: charter;
+    font-style: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    src: url('fonts/charter/charter_regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: charter;
+    font-style: italic;
+    font-weight: normal;
+    font-stretch: normal;
+    src: url('fonts/charter/charter_italic.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: charter;
+    font-style: normal;
+    font-weight: bold;
+    font-stretch: normal;
+    src: url('fonts/charter/charter_bold.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: charter;
+    font-style: italic;
+    font-weight: bold;
+    font-stretch: normal;
+    src: url('fonts/charter/charter_bold_italic.woff2') format('woff2');
+}
+
 body {
     margin: 0 auto;
-    max-width: 40em;
-
-    font-family: 'Fira Sans', sans-serif;
+    max-width: 35em;
+    
+    font-family: 'charter';
     font-size: 1.2em;
 
     line-height: 1.5;
     padding: 4em 1em;
+
+    background-color: white;
 }
 
 h2 {
@@ -15,17 +49,31 @@ h2 {
 }
 
 a {
-    color: #ec7664;
+    color: #D68614;
+}
+
+a:hover {
+    color: #B7372E;
 }
 
 #self-foto {
     float: right;
-    margin-top: 0.5em;
+    margin-top: 0em;
     margin-left: 1em;
 }
 
 #self-foto .figure-number {
     display: none;
+}
+
+#self-foto figure {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+}
+
+#self-foto figcaption {
+    margin-left: 0.5em;
 }
 
 footer {
@@ -37,4 +85,27 @@ figure {
     margin-bottom: 0px;
     margin-right: 0px;
     margin-left: 0px;
+}
+
+figure figcaption {
+    font-size: 0.9em;
+}
+
+nav {
+    width: max-content; /* make it not stretch across page */
+}
+
+nav ul {
+    display: inline-flex; /* show horizontal */
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    list-style: none;
+    padding: 0.5em;
+    padding-left: 1.5em;
+    margin: 0;
+}
+
+nav ul li {
+    margin-right: 1em;
 }

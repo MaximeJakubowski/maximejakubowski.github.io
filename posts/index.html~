@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2021-04-05 Mon 17:04 -->
+<!-- 2021-04-05 Mon 18:56 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Post List</title>
@@ -10,11 +10,17 @@
 <link rel="stylesheet" href="/css/style.css" type="text/css"/>
 </head>
 <body>
+<div id="preamble" class="status">
+
+<nav id="post-home">
+<a href="/">Home</a>
+</nav>
+</div>
 <div id="content">
 <header>
 <h1 class="title">Post List</h1>
 </header><ul class="org-ul">
-<li><a href="post1.html">Hello, this is my first post.</a></li>
+<li><a href="website.html">Creating This Website</a></li>
 </ul>
 </div>
 <div id="postamble" class="status">
@@ -35,7 +41,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2021-04-05 Mon 17:04.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2021-04-05 Mon 18:56.
 </div>
 </footer>
 </div>
