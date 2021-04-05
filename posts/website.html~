@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2021-04-05 Mon 18:55 -->
+<!-- 2021-04-05 Mon 20:55 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Creating This Website</title>
@@ -13,7 +13,7 @@
 <div id="preamble" class="status">
 
 <nav id="post-home">
-<a href="/">Home</a>
+<ul><li><a href="/">Home</a></li></ul>
 </nav>
 </div>
 <div id="content">
@@ -48,6 +48,14 @@ The greatest help of all came from these two articles:
 </ul>
 
 <p>
+Lastly, I really liked these resources:
+</p>
+<ul class="org-ul">
+<li><a href="https://practicaltypography.com/">Practical Typography</a> &#x2014; Highly recommended</li>
+<li><a href="http://colormind.io/">Colormind</a></li>
+</ul>
+
+<p>
 Good luck.
 </p>
 </div>
@@ -69,7 +77,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2021-04-05 Mon 18:17.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2021-04-05 Mon 20:54.
 </div>
 </footer>
 </div>
