@@ -1,0 +1,40 @@
+body {
+    margin: 0 auto;
+    max-width: 40em;
+
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 1.2em;
+
+    line-height: 1.5;
+    padding: 4em 1em;
+}
+
+h2 {
+    margin-top: 1em;
+    padding-top: 1em;
+}
+
+a {
+    color: #ec7664;
+}
+
+#self-foto {
+    float: right;
+    margin-top: 0.5em;
+    margin-left: 1em;
+}
+
+#self-foto .figure-number {
+    display: none;
+}
+
+footer {
+    font-size: 0.8em;
+}
+
+figure {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
