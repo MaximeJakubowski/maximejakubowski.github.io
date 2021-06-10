@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2021-04-05 Mon 20:56 -->
+<!-- 2021-04-09 Fri 11:20 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Maxime Jakubowski</title>
@@ -16,14 +16,14 @@
 </header><nav>
 <ul class="org-ul">
 <li><a href="posts/index.html">Posts</a></li>
-<li><a href="#org20ea700">About me</a></li>
-<li><a href="#orgf939ddf">Contact</a></li>
+<li><a href="#orgf6faa1a">About me</a></li>
+<li><a href="#org8bc0644">Contact</a></li>
 </ul>
 </nav>
 
 <div id="self-foto">
 
-<figure id="org628448c">
+<figure id="org8a8a8c8">
 <img src="img/me.jpg" alt="me.jpg">
 
 <figcaption><span class="figure-number">Figure 1: </span>A picture of me</figcaption>
@@ -37,9 +37,9 @@ have to start somewhere after all.
 </p>
 
 
-<div id="outline-container-org20ea700" class="outline-2">
-<h2 id="org20ea700">About me</h2>
-<div class="outline-text-2" id="text-org20ea700">
+<div id="outline-container-orgf6faa1a" class="outline-2">
+<h2 id="orgf6faa1a">About me</h2>
+<div class="outline-text-2" id="text-orgf6faa1a">
 <p>
 Currently, I am persuing a PhD in computer science within a joined
 program with <a href="https://www.uhasselt.be/">UHasselt</a> and <a href="https://www.vub.be/en/home">VUB</a>. Within my field of study I am mainly
@@ -52,7 +52,7 @@ find interesting.
 Next to defining myself as a student, I can also define myself as a
 <i>specifically curious</i> person. My scope of interest is wide and
 sparse. At this stage of my life I am still figuring out what unites
-them &#x2013; if they unite at all. A list of things I like to spend my
+them &#x2014; if they unite at all. A list of things I like to spend my
 time doing:
 </p>
 
@@ -66,16 +66,16 @@ time doing:
 
 <p>
 This list is incomplete and in no particular order. I'm also not
-claiming to be an expert, or even good, in any of these things. My
+claiming to be an expert, or even good, at any of these things. My
 time is spend mainly by persuing my interests slowly. The only reason
 I do any of this is because I <i>want</i> to.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgf939ddf" class="outline-2">
-<h2 id="orgf939ddf">Online presence</h2>
-<div class="outline-text-2" id="text-orgf939ddf">
+<div id="outline-container-org8bc0644" class="outline-2">
+<h2 id="org8bc0644">Online presence</h2>
+<div class="outline-text-2" id="text-org8bc0644">
 <p>
 You can find me in the following places:
 </p>
@@ -88,20 +88,24 @@ You can find me in the following places:
 </div>
 </div>
 
-<div id="outline-container-orgc24e332" class="outline-2">
-<h2 id="orgc24e332">What to expect from this in the future</h2>
-<div class="outline-text-2" id="text-orgc24e332">
+<div id="outline-container-org72e3178" class="outline-2">
+<h2 id="org72e3178">What to expect from this in the future</h2>
+<div class="outline-text-2" id="text-org72e3178">
 <p>
 Please do not expect anything.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgce4533c" class="outline-2">
-<h2 id="orgce4533c">Updates</h2>
-<div class="outline-text-2" id="text-orgce4533c">
+<div id="outline-container-org7deeddb" class="outline-2">
+<h2 id="org7deeddb">Updates</h2>
+<div class="outline-text-2" id="text-org7deeddb">
 <ul class="org-ul">
-<li><a href="posts/website.html">Creating This Website</a></li>
+<li><a href="posts/runshacl.html">A SHACL Validator Playground</a></li>
+<li><a href="posts/phd.html">Persuing my PhD</a></li>
+<li><a href="posts/meditation.html">Meditation</a></li>
+<li><a href="posts/logicprogramming.html">Logic Programming</a></li>
+<li><a href="posts/emacs.html">Emacs</a></li>
 </ul>
 <p>
 <a href="posts/index.html">See more&#x2026;</a>
@@ -127,7 +131,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2021-04-05 Mon 19:01.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2021-04-08 Thu 16:54.
 </div>
 </footer>
 </div>
