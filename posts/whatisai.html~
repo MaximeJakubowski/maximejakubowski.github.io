@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-03-30 Wed 14:49 -->
+<!-- 2021-04-09 Fri 11:20 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Post List</title>
+<title>What is Artificial Intelligence?</title>
 <meta name="generator" content="Org mode">
 <meta name="author" content="Maxime Jakubowski">
 <link rel="stylesheet" href="/css/style.css" type="text/css"/>
@@ -18,12 +18,30 @@
 </div>
 <div id="content">
 <header>
-<h1 class="title">Post List</h1>
-</header><ul class="org-ul">
-<li><a href="shapefragments.html">Shape Fragments and Subgraphs</a></li>
-<li><a href="website.html">Creating This Website</a></li>
-<li><a href="introshacl.html">SHACL: an introduction</a></li>
-</ul>
+<h1 class="title">What is Artificial Intelligence?</h1>
+</header><p>
+I'm not the first to ask this question.
+</p>
+
+<p>
+Definition of Jan.
+Definition of Bart.
+Definition of Nico.
+<a href="https://dke.maastrichtuniversity.nl/nico.roos/discussion">https://dke.maastrichtuniversity.nl/nico.roos/discussion</a>
+</p>
+
+<p>
+<a href="https://spectrum.ieee.org/the-institute/ieee-member-news/stop-calling-everything-ai-machinelearning-pioneer-says">https://spectrum.ieee.org/the-institute/ieee-member-news/stop-calling-everything-ai-machinelearning-pioneer-says</a>
+</p>
+
+<p>
+<a href="https://www.nytimes.com/2021/02/23/technology/ai-innovation-privacy-seniors-education.html">https://www.nytimes.com/2021/02/23/technology/ai-innovation-privacy-seniors-education.html</a>
+</p>
+
+
+<p>
+What is CS?
+</p>
 </div>
 <div id="postamble" class="status">
 <hr/>
@@ -43,7 +61,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2022-03-30 Wed 14:49.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2021-04-06 Tue 10:19.
 </div>
 </footer>
 </div>

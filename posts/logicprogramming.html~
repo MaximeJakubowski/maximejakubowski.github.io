@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-03-30 Wed 14:49 -->
+<!-- 2021-04-09 Fri 11:20 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Post List</title>
+<title>Logic Programming</title>
 <meta name="generator" content="Org mode">
 <meta name="author" content="Maxime Jakubowski">
 <link rel="stylesheet" href="/css/style.css" type="text/css"/>
@@ -18,11 +18,26 @@
 </div>
 <div id="content">
 <header>
-<h1 class="title">Post List</h1>
+<h1 class="title">Logic Programming</h1>
 </header><ul class="org-ul">
-<li><a href="shapefragments.html">Shape Fragments and Subgraphs</a></li>
-<li><a href="website.html">Creating This Website</a></li>
-<li><a href="introshacl.html">SHACL: an introduction</a></li>
+<li>What is it?
+<ul class="org-ul">
+<li>Declarative programming</li>
+<li>Predicate logic as programming language</li>
+</ul></li>
+<li>Semantics
+<ul class="org-ul">
+<li>What does semantics mean?</li>
+<li>Philosophy</li>
+<li>As models for logic: Tarski, but others?</li>
+<li>Not always meant to mean models for theories</li>
+</ul></li>
+<li>Use-case: SHACL
+<ul class="org-ul">
+<li>Why involve logic programming here?</li>
+<li>Separate article</li>
+<li>How do the semantics make a difference</li>
+</ul></li>
 </ul>
 </div>
 <div id="postamble" class="status">
@@ -43,7 +58,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2022-03-30 Wed 14:49.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2021-04-07 Wed 10:55.
 </div>
 </footer>
 </div>

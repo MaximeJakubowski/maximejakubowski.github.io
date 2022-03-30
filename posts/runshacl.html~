@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2021-04-09 Fri 11:20 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A SHACL Validator Playground</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="Maxime Jakubowski">
+<link rel="stylesheet" href="/css/style.css" type="text/css"/>
+<link rel="stylesheet" href="/css/validation-tool.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+
+<nav id="post-home">
+<ul><li><a href="/">Home</a></li></ul>
+</nav>
+</div>
+<div id="content">
+<header>
+<h1 class="title">A SHACL Validator Playground</h1>
+</header>
+
+<div id="outline-container-orga3ef58e" class="outline-2">
+<h2 id="orga3ef58e">Shapes Graph</h2>
+<div class="outline-text-2" id="text-orga3ef58e">
+<textarea id="datagraph" class="validation-tool"> </textarea>
+</div>
+</div>
+
+<div id="outline-container-org9bcf1f1" class="outline-2">
+<h2 id="org9bcf1f1">Data Graph</h2>
+<div class="outline-text-2" id="text-org9bcf1f1">
+<textarea id="datagraph" class="validation-tool"> </textarea>
+</div>
+</div>
+
+<div id="outline-container-orge25e9e4" class="outline-2">
+<h2 id="orge25e9e4">Validate</h2>
+<div class="outline-text-2" id="text-orge25e9e4">
+<ul class="validation-tool">
+<li> <button class="validation-tool" type="button"> Run Apache Jena </button> </li>
+<li> <button class="validation-tool" type="button"> Run TopQuadrant </button> </li>
+<li> <button class="validation-tool" type="button"> Run Unknown </button> </li>
+</ul
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="copyright-container">
+<div class="copyright">
+Copyright &copy; 2020-2021 Maxime Jakubowski some rights reserved<br/>
+Content is available under
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+CC-BY-SA 4.0</a> unless otherwise noted
+</div>
+<div class="cc-badge">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License"
+     src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+</a>
+</div>
+</div>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2021-04-08 Thu 19:44.
+</div>
+</footer>
+</div>
+</body>
+</html>

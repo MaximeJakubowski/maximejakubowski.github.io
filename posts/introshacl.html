@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-03-30 Wed 14:21 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SHACL: an introduction</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="Maxime Jakubowski">
+<link rel="stylesheet" href="/css/style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+
+<nav id="post-home">
+<ul><li><a href="/">Home</a></li></ul>
+</nav>
+</div>
+<div id="content">
+<header>
+<h1 class="title">SHACL: an introduction</h1>
+</header><p>
+The SHapes Constraint Language (SHACL) is a language in which you
+define constraints over RDF graphs. You can write things like: "every
+person needs to know someone" and the RDF graph can <i>conform</i> to that
+constraint or not. Such a SHACL constraint is referred to as a
+<i>shape</i>. In practice you often write a set of these shapes which define
+your expectations of some RDF graph. This set of shapes is referred to
+as a SHACL <i>shapes graph</i>. The name contains "graph" because these
+shapes are themselves written as an RDF graph. To distinguish a SHACL
+<i>shapes graph</i> from the data it validates (which is of course also RDF)
+we refer to the data as the <i>data graph</i>.
+</p>
+
+<p>
+The above description of SHACL immediatly brings us to its main
+function: checking conformance. Given a shapes graph and a data graph,
+we want to know if the data graph adheres to all shapes defined in the
+shapes graph. This is clearly a useful task in practice as you want to
+know if your data is in the right format for you to process.
+</p>
+
+<p>
+It is useful to consider the rough anatomy of a shape. It consists of
+three main components:
+</p>
+<ul class="org-ul">
+<li>the shape name,</li>
+<li>the target declaration(s), and</li>
+<li>the shape definition.</li>
+</ul>
+<p>
+(I deviate slightly from the specification which defines a shape more
+broadly. However, for the purpose of this exposition, I like my
+definition better) Consider the example:
+</p>
+<pre class="example" id="org2296649">
+:SocialShape a sh:PropertyShape ;
+    sh:path schema:knows ;
+    sh:minCount 1 .
+
+:SocialShape sh:targetClass schema:Person .
+</pre>
+<p>
+Here, we have one shape called <code>:SocialShape</code> which states that the
+<i>focus nodes</i> in the data graph need to have at least one outgoing
+<code>schema:knows</code> edge. Informally, "focus node" just means the node that
+is considered to adhere to this shape. The focus nodes here are given
+by the target declaration on the last line. The targeting statement
+describes all nodes that are of <code>rdf:type schema:Person</code>. So all nodes
+in the data graph that are declared to be of type <code>schema:Person</code> will
+be considered as focus node for <code>:SocialShape</code>.
+</p>
+
+<p>
+Conformance captures the spirit of SHACL. However, when your graph
+does not conform to your constraints, you want to know where the
+problems occur. In this case, conformance is not good enough. We need
+some report stating which nodes do not satisfy which shape in the
+shapes graph. The task of generating such a report is called
+<i>validation</i>.
+</p>
+
+<p>
+To be continued&#x2026; I initially wrote this post just to give people
+some idea of what SHACL is, as the specification is too cryptic to be
+useful as a short introduction.
+</p>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="copyright-container">
+<div class="copyright">
+Copyright &copy; 2020-2021 Maxime Jakubowski some rights reserved<br/>
+Content is available under
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+CC-BY-SA 4.0</a> unless otherwise noted
+</div>
+<div class="cc-badge">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License"
+     src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+</a>
+</div>
+</div>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2022-01-18 Tue 17:39.
+</div>
+</footer>
+</div>
+</body>
+</html>

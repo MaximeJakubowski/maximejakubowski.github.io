@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-03-30 Wed 14:21 -->
+<!-- 2021-04-09 Fri 11:20 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Creating This Website</title>
@@ -32,15 +32,12 @@ First of all, the technologies:
 <li>Hosting using <a href="https://pages.github.com/">Github Pages</a></li>
 </ul>
 <p>
-This is as basic as it can get. The idea is as follows:
+This is as basic as it can get. The idea is as follows: first, you
+write an Org Publish configuration file. Then, you write your webpages
+in Org files. Next, the html files are generated through the Org
+Publish package. Lastly, the generated html files are put in the git
+repository that represents your Github Pages location.
 </p>
-<ol class="org-ol">
-<li>write an Org Publish configuration file</li>
-<li>write your webpages in Org files</li>
-<li>the html files are generated through the Org Publish package</li>
-<li>lastly, the generated html files are put in the git repository that
-represents your Github Pages location.</li>
-</ol>
 
 <p>
 The greatest help of all came from these two articles:
@@ -51,7 +48,7 @@ The greatest help of all came from these two articles:
 </ul>
 
 <p>
-I really liked these resources:
+Lastly, I really liked these resources:
 </p>
 <ul class="org-ul">
 <li><a href="https://practicaltypography.com/">Practical Typography</a> &#x2014; Highly recommended</li>
@@ -81,7 +78,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2022-01-18 Tue 17:58.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2021-04-05 Mon 20:56.
 </div>
 </footer>
 </div>

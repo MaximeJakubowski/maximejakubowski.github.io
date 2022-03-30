@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-03-30 Wed 14:49 -->
+<!-- 2021-04-09 Fri 11:20 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Post List</title>
@@ -20,9 +20,13 @@
 <header>
 <h1 class="title">Post List</h1>
 </header><ul class="org-ul">
-<li><a href="shapefragments.html">Shape Fragments and Subgraphs</a></li>
+<li><a href="runshacl.html">A SHACL Validator Playground</a></li>
+<li><a href="phd.html">Persuing my PhD</a></li>
+<li><a href="meditation.html">Meditation</a></li>
+<li><a href="logicprogramming.html">Logic Programming</a></li>
+<li><a href="emacs.html">Emacs</a></li>
+<li><a href="whatisai.html">What is Artificial Intelligence?</a></li>
 <li><a href="website.html">Creating This Website</a></li>
-<li><a href="introshacl.html">SHACL: an introduction</a></li>
 </ul>
 </div>
 <div id="postamble" class="status">
@@ -43,7 +47,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2022-03-30 Wed 14:49.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2021-04-09 Fri 11:20.
 </div>
 </footer>
 </div>

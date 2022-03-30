@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-03-30 Wed 14:49 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shape Fragments and Subgraphs</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="Maxime Jakubowski">
+<link rel="stylesheet" href="/css/style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+
+<nav id="post-home">
+<ul><li><a href="/">Home</a></li></ul>
+</nav>
+</div>
+<div id="content">
+<header>
+<h1 class="title">Shape Fragments and Subgraphs</h1>
+</header><p>
+In this post I'd like to explain some of the ideas from our recent
+researchpaper, starting small to illustrate the design choices and
+considerations. The paper is titled <a href="https://arxiv.org/abs/2112.11796">Shape Fragments</a> and in its
+essence, it describes how the <a href="introshacl.html">constraint language SHACL</a> can be used to
+specify subsets of an RDF graph.
+</p>
+
+<p>
+The idea described previously seems simple. We take a data graph, we
+take a shapes graph, then we "trace out" the shapes from the shapes
+graph from the data graph and, voila, we're done with it. Of course,
+this leaves out what it means to "trace out" shapes from a
+graph. Consider the following example shape:
+</p>
+
+<pre class="example" id="orge65f9bf">
+:SocialShape a sh:PropertyShape ;
+    sh:targetClass foaf:Person ;
+    sh:path foaf:knows ;
+    sh:minCount 1 .
+</pre>
+
+<p>
+Intuitively, you want only consider nodes that adhere to the shape and
+you want to "follow properties" to create a subgraph. In this example,
+you take all triples where the subject is the focus node and which
+also have <code>foaf:knows</code> as a predicate. Consider the following data
+graph:
+</p>
+<pre class="example" id="org5b167d6">
+:maxime a foaf:Person ;
+    foaf:givenName "Maxime" ;
+    foaf:knows :thomas ;
+    foaf:knows :anastasia ;
+    foaf:knows :jan .
+</pre>
+<p>
+Using the ideas formulated earlier, we obtain the subgraph:
+</p>
+<pre class="example" id="org1e7eda8">
+:maxime foaf:knows :thomas ;
+    foaf:knows :anastasia ;
+    foaf:knows :jan .
+</pre>
+<p>
+We believe this to be a simple and intuitive definition for the given
+shape. You may argue that because <code>:SocialShape</code> mentioned the
+<code>rdf:class</code>, we also want it in the subgraph. We would agree and have
+defined it as such in the paper.
+</p>
+
+<p>
+You can imagine trying to define subgraphs for every possible SHACL
+construct, but few definitions are as straightforward as the one
+discussed above. The one defined above isn't even that obvious. You
+could ask yourself: why does the subgraph contain <i>all</i> outgoing
+<code>foaf:knows</code> edges? One philosophy could be to let the subgraph only
+contain "just enough". After all, <code>:SocialShape</code> only says there needs
+to be at least one.
+</p>
+
+<p>
+This brings us to one of the principles we followed when defining the
+subgraphs: <b>determinism</b>. In the <code>:SocialShape</code> case, because triples in
+an RDF graph are not sorted, the only choice we have is returning all
+the triples.
+</p>
+
+<p>
+Let's consider another example:
+</p>
+<pre class="example" id="orge8d4d37">
+:AntisocialShape a sh:PropertyShape ;
+    sh:targetClass foaf:Person ;
+    sh:path foaf:knows ;
+    sh:maxCount 2 .
+</pre>
+<p>
+Here, you are antisocial when you know at most two others. Consider a
+new data graph:
+</p>
+<pre class="example" id="org6fb9d95">
+:bob a foaf:Person ;
+    foaf:givenName "Bob" ;
+    foaf:knows :alice ;
+    foaf:knows :tim .
+</pre>
+<p>
+What would be a natural definition for a subgraph given our
+<code>:AntisocialShape</code>? Keeping in mind our principle of determinism, we are
+left with two choices. Both contain the triple <code>:bob a foaf:Person</code> as
+we discussed earlier. The first option is the subgraph constaining all
+<code>foaf:knows</code> triples where <code>:bob</code> is the subject. The second option
+contains only the above mentioned triple. Both options seem
+reasonable, and we opted for the latter.
+</p>
+
+<p>
+The reason being that this somehow comes closer to another underlying
+principle: <b>minimality</b>. We chose the smallest subgraph we can while
+somehow still maintaining the essence of the original data graph.
+</p>
+
+<p>
+This leads to the following observation: the empty subgraph also is
+minimal and deterministic. This is the essence of the major open
+problem within this work: we want formally defined "postulates" which
+lead us to a definition of Shape Fragments. The principles of
+determinism and minimality are just design guidelines.
+</p>
+
+<p>
+Nevertheless, I believe these design guidelines together with our
+proposal for the definition of subgraphs are reasonable. This believe
+is strengthened by one of the formal contributions of the paper: the
+Sufficiency Lemma (and its corollary). The notion of Sufficiency is
+borrowed from work on database Provenance, which is highly
+relevant. Informally, the lemma states that for every SHACL construct
+(like the ones demonstrated by <code>:SocialShape</code> and <code>:AntisocialShape</code>)
+defines a subgraph which contains enough triples such that the shape
+used for defining it still holds for the same nodes in the
+subgraph. Even when you add more triples from the original graph to
+the subgraph. In short, shapes that hold in the original graph, also
+hold in every subgraph that contains <i>at least</i> the triples provided by
+our definition. The "at least" is important here. For example, it
+means that the choice of minimality in the subgraph definition of
+<code>:AntisocialShape</code> is not necessary for our result to hold.
+</p>
+
+<p>
+Finally I would like to note that the Suffiency property of our
+definition captures some intuition that subgraphs given by shapes need
+to still adhere to these shapes. This gives us a stronger link to the
+definition of SHACL as a constraint language.
+</p>
+
+<p>
+Hopefully this short post raises your interest in our work. There are
+interesting problems to solve here, both for more theoretically minded
+people (I'm thinking of the above mentioned postulates and other
+properties of the subgraphs) and more practically minded peope
+(Relating to the implementation and use-case side of things). The
+paper also discusses some preliminary results on implemenatation which
+may be of interest. 
+</p>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="copyright-container">
+<div class="copyright">
+Copyright &copy; 2020-2021 Maxime Jakubowski some rights reserved<br/>
+Content is available under
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+CC-BY-SA 4.0</a> unless otherwise noted
+</div>
+<div class="cc-badge">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License"
+     src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+</a>
+</div>
+</div>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2022-03-30 Wed 14:34.
+</div>
+</footer>
+</div>
+</body>
+</html>
