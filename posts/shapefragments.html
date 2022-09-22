@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-03-30 Wed 14:49 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 2022-09-22 Thu 10:02 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Shape Fragments and Subgraphs</title>
-<meta name="generator" content="Org mode">
-<meta name="author" content="Maxime Jakubowski">
+<meta name="author" content="Maxime Jakubowski" />
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" href="/css/style.css" type="text/css"/>
 </head>
 <body>
@@ -16,7 +16,7 @@
 <ul><li><a href="/">Home</a></li></ul>
 </nav>
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Shape Fragments and Subgraphs</h1>
 </header><p>
@@ -35,7 +35,7 @@ this leaves out what it means to "trace out" shapes from a
 graph. Consider the following example shape:
 </p>
 
-<pre class="example" id="orge65f9bf">
+<pre class="example" id="org5a641cd">
 :SocialShape a sh:PropertyShape ;
     sh:targetClass foaf:Person ;
     sh:path foaf:knows ;
@@ -49,7 +49,7 @@ you take all triples where the subject is the focus node and which
 also have <code>foaf:knows</code> as a predicate. Consider the following data
 graph:
 </p>
-<pre class="example" id="org5b167d6">
+<pre class="example" id="org53e5424">
 :maxime a foaf:Person ;
     foaf:givenName "Maxime" ;
     foaf:knows :thomas ;
@@ -59,7 +59,7 @@ graph:
 <p>
 Using the ideas formulated earlier, we obtain the subgraph:
 </p>
-<pre class="example" id="org1e7eda8">
+<pre class="example" id="org5fd2c08">
 :maxime foaf:knows :thomas ;
     foaf:knows :anastasia ;
     foaf:knows :jan .
@@ -91,7 +91,7 @@ the triples.
 <p>
 Let's consider another example:
 </p>
-<pre class="example" id="orge8d4d37">
+<pre class="example" id="org552ca6a">
 :AntisocialShape a sh:PropertyShape ;
     sh:targetClass foaf:Person ;
     sh:path foaf:knows ;
@@ -101,7 +101,7 @@ Let's consider another example:
 Here, you are antisocial when you know at most two others. Consider a
 new data graph:
 </p>
-<pre class="example" id="org6fb9d95">
+<pre class="example" id="org05b1ec1">
 :bob a foaf:Person ;
     foaf:givenName "Bob" ;
     foaf:knows :alice ;
@@ -184,7 +184,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2022-03-30 Wed 14:34.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2022-03-30 Wed 14:34.
 </div>
 </footer>
 </div>

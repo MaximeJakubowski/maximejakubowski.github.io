@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-09-22 Thu 10:02 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Recursion for SHACL</title>
+<meta name="author" content="Maxime Jakubowski" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="/css/style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+
+<nav id="post-home">
+<ul><li><a href="/">Home</a></li></ul>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Recursion for SHACL</h1>
+</header><p>
+The W3C recommendation that defines SHACL explicitly leaves recursion
+undefined. In this post, I will discuss this topic in light of
+existing academic work:
+</p>
+<ul class="org-ul">
+<li><a href="https://www.inf.unibz.it/krdb/KRDB%20files/tech-reports/KRDB18-01.pdf">Semantics and Validation of Recursive SHACL</a></li>
+<li><a href="https://dbai.tuwien.ac.at/staff/simkus/papers/www-shacl-2020.pdf">Stable Model Semantics for Recursive SHACL</a></li>
+<li>and our own work <a href="https://arxiv.org/abs/2109.08285">Fixpoint Semantics for Recursive SHACL</a></li>
+</ul>
+<p>
+The goal of this post is to clarify what it means to add recursion to
+SHACL, and to illustrate the ideas presented in these papers.
+</p>
+
+<div id="outline-container-org96900b0" class="outline-2">
+<h2 id="org96900b0">Recursive Shapes</h2>
+<div class="outline-text-2" id="text-org96900b0">
+<p>
+In SHACL, a shape is said to be recursive if it references itself
+directly or indirectly. For example, 
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="copyright-container">
+<div class="copyright">
+Copyright &copy; 2020-2021 Maxime Jakubowski some rights reserved<br/>
+Content is available under
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+CC-BY-SA 4.0</a> unless otherwise noted
+</div>
+<div class="cc-badge">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License"
+     src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+</a>
+</div>
+</div>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2022-04-08 Fri 08:10.
+</div>
+</footer>
+</div>
+</body>
+</html>

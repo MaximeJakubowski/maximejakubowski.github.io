@@ -65,7 +65,7 @@ a:hover {
 #self-foto {
     margin-top: 1em;
     margin-left: 1em;
-    width: max-content;
+    width: 35%;
 }
 
 #self-foto .figure-number {
@@ -76,6 +76,10 @@ a:hover {
     border-style: solid;
     border-color: black;
     border-width: 1px;
+}
+
+#self-foto img {
+    width: 100%;
 }
 
 #self-foto figcaption {
