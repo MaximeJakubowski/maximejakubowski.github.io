@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-10-03 Mon 18:51 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Extending SHACL</title>
+<meta name="author" content="Maxime Jakubowski" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="/css/style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+
+<nav id="post-home">
+<ul><li><a href="/">Home</a></li></ul>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Extending SHACL</h1>
+</header><p>
+While browsing the web, I found this interesting web page titled <a href="https://datashapes.org/constraints.html">DASH
+Constraint Components</a>. It defines some new constraint components for
+SHACL. As my research at the moment revolves a lot around the
+<i>expressiveness</i> of SHACL, this really interests me. Here, I want to
+quickly give my view on these extensions.
+</p>
+
+<p>
+The first thing I tried to do was to express these extensions with
+existing core SHACL. However, I quickly noticed a small extension is
+required to make it all work out: both <code>sh:equals</code> and <code>sh:disjoint</code> need
+to support full path expressions. I've seen this being mentioned in
+the SHACL Discord server. Let's go over the extensions proposed by
+<code>dash</code> and try to express them:
+</p>
+
+<ul class="org-ul">
+<li><p>
+<code>dash:rootClass &lt;root&gt;</code> &#x2014; simply check whether the focus node is a
+subclass of <code>&lt;root&gt;</code> . This can be done in current SHACL using the
+property shape:
+</p>
+<pre class="example" id="org7913b06">
+[ a sh:PropertyShape ;
+  sh:path [ sh:zeroOrMorePath rdfs:subClassOf ] ;
+  sh:hasValue &lt;root&gt;  
+]
+</pre></li>
+<li><code>dash:stem</code> and <code>dash:singleLine</code> are additional checks on strings,
+which cannot be done in SHACL.</li>
+<li><p>
+<code>dash:coExistsWith &lt;prop&gt;</code> &#x2014; when applied to a property shape with
+<code>sh:path &lt;path&gt;</code>, it means that if there is a node reachable by
+<code>&lt;path&gt;</code>, there must also be a node reachable by <code>&lt;prop&gt;</code>. Otherwise,
+when there is no node reachable by <code>&lt;path&gt;</code>, there may also be no node
+reachable by <code>&lt;prop&gt;</code>. This can be done in SHACL using the node shape:
+</p>
+<pre class="example" id="org0ba895a">
+[ a sh:NodeShape ;
+  sh:and (
+    [ sh:or (
+        [ sh:path &lt;path&gt; ;
+	  sh:maxCount 0
+	]
+	[ sh:path &lt;prop&gt; ;
+	  sh:minCount 1
+	] )
+    ]
+    [ sh:or (
+	[ sh:path &lt;path&gt; ;
+	  sh:minCount 1
+	]
+	[ sh:path &lt;prop&gt; ;
+	  sh:maxCount 0
+	] )
+    ]
+  )
+]
+</pre></li>
+<li><p>
+<code>dash:subSetOf &lt;prop&gt;</code> &#x2014; when applied to a property shape with
+<code>sh:path &lt;path&gt;</code>, it means that all nodes reachable with <code>&lt;path&gt;</code> must
+also be reachable with <code>&lt;prop&gt;</code>. This can be done in SHACL:
+</p>
+<pre class="example" id="org922698b">
+[ a sh:PropertyShape ;
+  sh:path [ sh:alternativePath (&lt;path&gt; &lt;prop&gt;) ] ;
+  sh:equals &lt;prop&gt;
+]
+</pre></li>
+<li><p>
+<code>dash:nonRecursive &lt;true | false&gt;</code> &#x2014; when applied to a property
+shape with <code>sh:path &lt;path&gt;</code>, it means that there may not be a path
+<code>&lt;path&gt;</code> to the focusnode itself. This is an interesting shape that is
+expressible in SHACL <i>with <code>sh:equals</code> that support full paths</i>:
+</p>
+<pre class="example" id="org052ad77">
+[ a sh:NodeShape
+  sh:not [ a sh:PropertyShape ;
+           sh:path &lt;path&gt; ;
+           sh:equals [ sh:zeroOrOnePath &lt;path&gt; ]
+         ]
+]
+</pre></li>
+<li><p>
+<code>dash:symmetric &lt;true | false&gt;</code> &#x2014; when applied to a property shape
+with <code>sh:path &lt;path&gt;</code>, it means that every node reachable with <code>&lt;path&gt;</code>
+must also be reachable with the inverse of that <code>&lt;path&gt;</code>. This can be
+done in SHACL <i>with <code>sh:equals</code> that support full paths</i>:
+</p>
+<pre class="example" id="org3c6bc31">
+[ a sh:PropertyShape ;
+  sh:path &lt;path&gt; ;
+  sh:equals [ sh:alternativePath (&lt;path&gt; [ sh:inversePath &lt;path&gt; ] ) ]
+]
+</pre></li>
+<li><p>
+<code>dash:closedByTypes &lt;true | false&gt;</code> &#x2014; this shape depends on the
+assumption that rdf types are also SHACL shapes. Then, we say that
+<code>(&lt;p1&gt; &lt;p2&gt; &lt;p3&gt; ...)</code> are the properties mentioned by the shapes that
+are also the type or a superclass of the type of the focus node. We
+can then write this in SHACL as:
+</p>
+<pre class="example" id="orgcd75073">
+[ a sh:NodeShape ;
+  sh:closed true ;
+  sh:property [ sh:path &lt;p1&gt; ] ;
+  sh:property [ sh:path &lt;p2&gt; ] ;
+  sh:property [ sh:path &lt;p3&gt; ] ;
+  ...
+]
+</pre></li>
+
+<li><p>
+<code>dash:hasValueIn (&lt;c1&gt; &lt;c2&gt; &lt;c3&gt; ...)</code> &#x2014; when applied to a property
+shape with <code>sh:path &lt;path&gt;</code>, it means that there must exist a node
+reachable with <code>&lt;path&gt;</code> such that this node is one of <code>(&lt;c1&gt; &lt;c2&gt; &lt;c3&gt;
+  ...)</code>. This can be expressed in SHACL:
+</p>
+<pre class="example" id="orgb22f19a">
+[ a sh:NodeShape ;
+  sh:or (
+    [ sh:path &lt;path&gt; ;
+      sh:qualifiedValueShape [ sh:in (&lt;c1&gt;) ] ;
+      sh:qualifiedMinCount 1 ] ;
+    [ sh:path &lt;path&gt; ;
+      sh:qualifiedValueShape [ sh:in (&lt;c2&gt;) ] ;
+      sh:qualifiedMinCount 1 ] ;
+    [ sh:path &lt;path&gt; ;
+      sh:qualifiedValueShape [ sh:in (&lt;c3&gt;) ] ;
+      sh:qualifiedMinCount 1 ] ;
+    ...
+  )
+]
+</pre></li>
+<li><p>
+<code>dash:hasValueWithClass &lt;c&gt;</code> &#x2014; when applied to a property shape with
+<code>sh:path &lt;path&gt;</code>, it means that there must exist a node reachable by
+<code>&lt;path&gt;</code> to a node with a <code>rdf:type</code> edge to the <code>&lt;c&gt;</code> node. This can be
+expressed in SHACL:
+</p>
+<pre class="example" id="orgd7fa1ec">
+[ a sh:PropertyShape ;
+  sh:path ( &lt;path&gt; rdf:type ) ;
+  sh:qualifiedValueShape [ sh:in (&lt;c&gt;) ] ;
+  sh:qualifiedMinCount 1
+] 
+</pre></li>
+<li><p>
+<code>dash:uniqueValueForClass &lt;c&gt;</code> &#x2014; when applied to a property shape
+with <code>sh:path &lt;path&gt;</code>, it means the focus node is the only node with
+<code>rdf:type &lt;c&gt;</code> that can reach the value node (reached by <code>&lt;path&gt;</code>). In
+other words, every value node of the focus node must have exactly
+one inverse <code>&lt;path&gt;</code> to a node with <code>rdf:type &lt;c&gt;</code>.
+</p>
+<pre class="example" id="org411d2da">
+[ a sh:PropertyShape ;
+  sh:path &lt;path&gt; ;
+  sh:node [ a sh:PropertyShape ;
+            sh:path ( [ sh:inversePath &lt;path&gt; ] rdf:type ) ;
+            sh:qualifiedValueShape [ sh:in (&lt;c&gt;) ] ;
+	    sh:qualifiedMinCount 1 ;
+	    sh:qualifiedMaxCount 1 ]
+]
+</pre></li>
+<li><code>dash:uriStart &lt;s&gt;</code> &#x2014; this constraint requires a string test which
+is unsupported in current SHACL.</li>
+</ul>
+
+
+<p>
+So, to recap, the <code>dash</code> constraints that <i>are</i> expressible in the current
+SHACL are: <code>dash:rootClass</code>, <code>dash:coExistsWith</code>, <code>dash:subSetOf</code>,
+<code>dash:closedByType</code>, <code>dash:hasValueIn</code>, <code>dash:hasValueWithClass</code> and
+<code>dash:uniqueValueForClass</code>. The constraints that <i>are not</i> expressible in
+the current SHACL but are expressible when we allow for equality
+between paths are <code>dash:nonRecursive</code> and <code>dash:symmetric</code>. The
+constraints that are not expressible are: <code>dash:stem</code>, <code>dash:singleLine</code>,
+and <code>dash:uriStart</code>.
+</p>
+
+<p>
+In my view, this calls first and foremost for the extension of SHACL
+with equality (and disjointness) constraints that support full
+paths. This is a natural extension and will give more expressive
+power as is desired by <code>dash</code>.
+</p>
+
+<p>
+Another idea is to have some kind of macro system for SHACL. This way,
+we can add constraints like the ones expressible in the current SHACL
+and proposed by <code>dash</code>. SHACL can be complex to write and users may want
+to write macros for constraints they find interesting.
+</p>
+
+<p>
+Features are added to a language because there is some need for it. It
+could be an abbreviation of a common pattern (and adding explicit
+keywords can help optimizing certain shapes), or it could be something
+that seems not to be expressible but nevertheless desired by
+practitioners. I'm interested in solving the question whether these
+newly proposed features are already expressible. If they are, then it
+is useful to know, for example, to people who write SHACL validators
+as they can make use of existing code to implement new features. If
+the proposed features are not already expressible, it is also
+interesting to know that its addition really adds expressive power. <a href="https://drops.dagstuhl.de/opus/volltexte/2022/15889/pdf/LIPIcs-ICDT-2022-15.pdf">In
+our own work</a> for example, we found out that <code>sh:equals</code> and <code>sh:disjoint</code>
+really add expressive power to SHACL.
+</p>
+
+<p>
+Hopefully, this was an interesting read. As I'm only human, there may
+be some mistakes in my interpretation of the <code>dash</code> constraints. Any
+feedback is welcome.
+</p>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="copyright-container">
+<div class="copyright">
+Copyright &copy; 2020-2021 Maxime Jakubowski some rights reserved<br/>
+Content is available under
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+CC-BY-SA 4.0</a> unless otherwise noted
+</div>
+<div class="cc-badge">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License"
+     src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+</a>
+</div>
+</div>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2022-10-03 Mon 18:50.
+</div>
+</footer>
+</div>
+</body>
+</html>
