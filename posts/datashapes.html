@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-10-03 Mon 18:51 -->
+<!-- 2022-10-03 Mon 19:21 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Extending SHACL</title>
@@ -23,17 +23,16 @@
 While browsing the web, I found this interesting web page titled <a href="https://datashapes.org/constraints.html">DASH
 Constraint Components</a>. It defines some new constraint components for
 SHACL. As my research at the moment revolves a lot around the
-<i>expressiveness</i> of SHACL, this really interests me. Here, I want to
-quickly give my view on these extensions.
+<i>expressiveness</i> of SHACL, this really interests me.
 </p>
 
 <p>
 The first thing I tried to do was to express these extensions with
 existing core SHACL. However, I quickly noticed a small extension is
-required to make it all work out: both <code>sh:equals</code> and <code>sh:disjoint</code> need
-to support full path expressions. I've seen this being mentioned in
-the SHACL Discord server. Let's go over the extensions proposed by
-<code>dash</code> and try to express them:
+required to make it all work out: <code>sh:equals</code> needs to support full path
+expressions. I've seen this being mentioned in the SHACL Discord
+server. Let's go over the extensions proposed by <code>dash</code> and try to
+express them:
 </p>
 
 <ul class="org-ul">
@@ -42,7 +41,7 @@ the SHACL Discord server. Let's go over the extensions proposed by
 subclass of <code>&lt;root&gt;</code> . This can be done in current SHACL using the
 property shape:
 </p>
-<pre class="example" id="org7913b06">
+<pre class="example" id="org125c823">
 [ a sh:PropertyShape ;
   sh:path [ sh:zeroOrMorePath rdfs:subClassOf ] ;
   sh:hasValue &lt;root&gt;  
@@ -57,7 +56,7 @@ which cannot be done in SHACL.</li>
 when there is no node reachable by <code>&lt;path&gt;</code>, there may also be no node
 reachable by <code>&lt;prop&gt;</code>. This can be done in SHACL using the node shape:
 </p>
-<pre class="example" id="org0ba895a">
+<pre class="example" id="org2471283">
 [ a sh:NodeShape ;
   sh:and (
     [ sh:or (
@@ -84,7 +83,7 @@ reachable by <code>&lt;prop&gt;</code>. This can be done in SHACL using the node
 <code>sh:path &lt;path&gt;</code>, it means that all nodes reachable with <code>&lt;path&gt;</code> must
 also be reachable with <code>&lt;prop&gt;</code>. This can be done in SHACL:
 </p>
-<pre class="example" id="org922698b">
+<pre class="example" id="org4716598">
 [ a sh:PropertyShape ;
   sh:path [ sh:alternativePath (&lt;path&gt; &lt;prop&gt;) ] ;
   sh:equals &lt;prop&gt;
@@ -96,7 +95,7 @@ shape with <code>sh:path &lt;path&gt;</code>, it means that there may not be a p
 <code>&lt;path&gt;</code> to the focusnode itself. This is an interesting shape that is
 expressible in SHACL <i>with <code>sh:equals</code> that support full paths</i>:
 </p>
-<pre class="example" id="org052ad77">
+<pre class="example" id="orgbb9b360">
 [ a sh:NodeShape
   sh:not [ a sh:PropertyShape ;
            sh:path &lt;path&gt; ;
@@ -110,7 +109,7 @@ with <code>sh:path &lt;path&gt;</code>, it means that every node reachable with 
 must also be reachable with the inverse of that <code>&lt;path&gt;</code>. This can be
 done in SHACL <i>with <code>sh:equals</code> that support full paths</i>:
 </p>
-<pre class="example" id="org3c6bc31">
+<pre class="example" id="org5205a99">
 [ a sh:PropertyShape ;
   sh:path &lt;path&gt; ;
   sh:equals [ sh:alternativePath (&lt;path&gt; [ sh:inversePath &lt;path&gt; ] ) ]
@@ -123,7 +122,7 @@ assumption that rdf types are also SHACL shapes. Then, we say that
 are also the type or a superclass of the type of the focus node. We
 can then write this in SHACL as:
 </p>
-<pre class="example" id="orgcd75073">
+<pre class="example" id="org8f1ff3e">
 [ a sh:NodeShape ;
   sh:closed true ;
   sh:property [ sh:path &lt;p1&gt; ] ;
@@ -139,7 +138,7 @@ shape with <code>sh:path &lt;path&gt;</code>, it means that there must exist a n
 reachable with <code>&lt;path&gt;</code> such that this node is one of <code>(&lt;c1&gt; &lt;c2&gt; &lt;c3&gt;
   ...)</code>. This can be expressed in SHACL:
 </p>
-<pre class="example" id="orgb22f19a">
+<pre class="example" id="orgc151cf3">
 [ a sh:NodeShape ;
   sh:or (
     [ sh:path &lt;path&gt; ;
@@ -161,7 +160,7 @@ reachable with <code>&lt;path&gt;</code> such that this node is one of <code>(&l
 <code>&lt;path&gt;</code> to a node with a <code>rdf:type</code> edge to the <code>&lt;c&gt;</code> node. This can be
 expressed in SHACL:
 </p>
-<pre class="example" id="orgd7fa1ec">
+<pre class="example" id="orge4bcb8a">
 [ a sh:PropertyShape ;
   sh:path ( &lt;path&gt; rdf:type ) ;
   sh:qualifiedValueShape [ sh:in (&lt;c&gt;) ] ;
@@ -175,7 +174,7 @@ with <code>sh:path &lt;path&gt;</code>, it means the focus node is the only node
 other words, every value node of the focus node must have exactly
 one inverse <code>&lt;path&gt;</code> to a node with <code>rdf:type &lt;c&gt;</code>.
 </p>
-<pre class="example" id="org411d2da">
+<pre class="example" id="org07f9b3a">
 [ a sh:PropertyShape ;
   sh:path &lt;path&gt; ;
   sh:node [ a sh:PropertyShape ;
@@ -189,7 +188,6 @@ one inverse <code>&lt;path&gt;</code> to a node with <code>rdf:type &lt;c&gt;</c
 is unsupported in current SHACL.</li>
 </ul>
 
-
 <p>
 So, to recap, the <code>dash</code> constraints that <i>are</i> expressible in the current
 SHACL are: <code>dash:rootClass</code>, <code>dash:coExistsWith</code>, <code>dash:subSetOf</code>,
@@ -202,10 +200,26 @@ and <code>dash:uriStart</code>.
 </p>
 
 <p>
-In my view, this calls first and foremost for the extension of SHACL
-with equality (and disjointness) constraints that support full
-paths. This is a natural extension and will give more expressive
-power as is desired by <code>dash</code>.
+It is obvious that some of these translations are not practical as
+they require a lot of duplication. However, when features are added to
+a language because there is some need for it. It could be an
+abbreviation of a common pattern (and adding explicit keywords can
+help optimizing certain shapes), or it could be something that seems
+not to be expressible but nevertheless desired by practitioners. I'm
+interested in solving the question whether these newly proposed
+features are already expressible. If they are, then it is useful to
+know, for example, to people who write SHACL validators as they can
+make use of existing code to implement new features. If the proposed
+features are not already expressible, it is also interesting to know
+that its addition really adds expressive power. <a href="https://drops.dagstuhl.de/opus/volltexte/2022/15889/pdf/LIPIcs-ICDT-2022-15.pdf">In our own work</a> for
+example, we found out that <code>sh:equals</code> and <code>sh:disjoint</code> really add
+expressive power to SHACL.
+</p>
+
+<p>
+In my view, this hints at the extension of SHACL with equality (and
+disjointness) constraints that support full paths. This is a natural
+extension and will give more expressive power as is desired by <code>dash</code>.
 </p>
 
 <p>
@@ -213,21 +227,6 @@ Another idea is to have some kind of macro system for SHACL. This way,
 we can add constraints like the ones expressible in the current SHACL
 and proposed by <code>dash</code>. SHACL can be complex to write and users may want
 to write macros for constraints they find interesting.
-</p>
-
-<p>
-Features are added to a language because there is some need for it. It
-could be an abbreviation of a common pattern (and adding explicit
-keywords can help optimizing certain shapes), or it could be something
-that seems not to be expressible but nevertheless desired by
-practitioners. I'm interested in solving the question whether these
-newly proposed features are already expressible. If they are, then it
-is useful to know, for example, to people who write SHACL validators
-as they can make use of existing code to implement new features. If
-the proposed features are not already expressible, it is also
-interesting to know that its addition really adds expressive power. <a href="https://drops.dagstuhl.de/opus/volltexte/2022/15889/pdf/LIPIcs-ICDT-2022-15.pdf">In
-our own work</a> for example, we found out that <code>sh:equals</code> and <code>sh:disjoint</code>
-really add expressive power to SHACL.
 </p>
 
 <p>
@@ -254,7 +253,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2022-10-03 Mon 18:50.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2022-10-03 Mon 19:20.
 </div>
 </footer>
 </div>
