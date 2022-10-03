@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-10-03 Mon 19:21 -->
+<!-- 2022-10-03 Mon 19:26 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Extending SHACL</title>
@@ -41,7 +41,7 @@ express them:
 subclass of <code>&lt;root&gt;</code> . This can be done in current SHACL using the
 property shape:
 </p>
-<pre class="example" id="org125c823">
+<pre class="example" id="orgf691433">
 [ a sh:PropertyShape ;
   sh:path [ sh:zeroOrMorePath rdfs:subClassOf ] ;
   sh:hasValue &lt;root&gt;  
@@ -56,7 +56,7 @@ which cannot be done in SHACL.</li>
 when there is no node reachable by <code>&lt;path&gt;</code>, there may also be no node
 reachable by <code>&lt;prop&gt;</code>. This can be done in SHACL using the node shape:
 </p>
-<pre class="example" id="org2471283">
+<pre class="example" id="orgc898169">
 [ a sh:NodeShape ;
   sh:and (
     [ sh:or (
@@ -83,7 +83,7 @@ reachable by <code>&lt;prop&gt;</code>. This can be done in SHACL using the node
 <code>sh:path &lt;path&gt;</code>, it means that all nodes reachable with <code>&lt;path&gt;</code> must
 also be reachable with <code>&lt;prop&gt;</code>. This can be done in SHACL:
 </p>
-<pre class="example" id="org4716598">
+<pre class="example" id="org9a1435e">
 [ a sh:PropertyShape ;
   sh:path [ sh:alternativePath (&lt;path&gt; &lt;prop&gt;) ] ;
   sh:equals &lt;prop&gt;
@@ -95,7 +95,7 @@ shape with <code>sh:path &lt;path&gt;</code>, it means that there may not be a p
 <code>&lt;path&gt;</code> to the focusnode itself. This is an interesting shape that is
 expressible in SHACL <i>with <code>sh:equals</code> that support full paths</i>:
 </p>
-<pre class="example" id="orgbb9b360">
+<pre class="example" id="orgeecea8f">
 [ a sh:NodeShape
   sh:not [ a sh:PropertyShape ;
            sh:path &lt;path&gt; ;
@@ -109,7 +109,7 @@ with <code>sh:path &lt;path&gt;</code>, it means that every node reachable with 
 must also be reachable with the inverse of that <code>&lt;path&gt;</code>. This can be
 done in SHACL <i>with <code>sh:equals</code> that support full paths</i>:
 </p>
-<pre class="example" id="org5205a99">
+<pre class="example" id="orgcbfb69d">
 [ a sh:PropertyShape ;
   sh:path &lt;path&gt; ;
   sh:equals [ sh:alternativePath (&lt;path&gt; [ sh:inversePath &lt;path&gt; ] ) ]
@@ -122,7 +122,7 @@ assumption that rdf types are also SHACL shapes. Then, we say that
 are also the type or a superclass of the type of the focus node. We
 can then write this in SHACL as:
 </p>
-<pre class="example" id="org8f1ff3e">
+<pre class="example" id="org75ea57f">
 [ a sh:NodeShape ;
   sh:closed true ;
   sh:property [ sh:path &lt;p1&gt; ] ;
@@ -138,7 +138,7 @@ shape with <code>sh:path &lt;path&gt;</code>, it means that there must exist a n
 reachable with <code>&lt;path&gt;</code> such that this node is one of <code>(&lt;c1&gt; &lt;c2&gt; &lt;c3&gt;
   ...)</code>. This can be expressed in SHACL:
 </p>
-<pre class="example" id="orgc151cf3">
+<pre class="example" id="org376c604">
 [ a sh:NodeShape ;
   sh:or (
     [ sh:path &lt;path&gt; ;
@@ -160,7 +160,7 @@ reachable with <code>&lt;path&gt;</code> such that this node is one of <code>(&l
 <code>&lt;path&gt;</code> to a node with a <code>rdf:type</code> edge to the <code>&lt;c&gt;</code> node. This can be
 expressed in SHACL:
 </p>
-<pre class="example" id="orge4bcb8a">
+<pre class="example" id="orgbc526f9">
 [ a sh:PropertyShape ;
   sh:path ( &lt;path&gt; rdf:type ) ;
   sh:qualifiedValueShape [ sh:in (&lt;c&gt;) ] ;
@@ -174,7 +174,7 @@ with <code>sh:path &lt;path&gt;</code>, it means the focus node is the only node
 other words, every value node of the focus node must have exactly
 one inverse <code>&lt;path&gt;</code> to a node with <code>rdf:type &lt;c&gt;</code>.
 </p>
-<pre class="example" id="org07f9b3a">
+<pre class="example" id="org0678045">
 [ a sh:PropertyShape ;
   sh:path &lt;path&gt; ;
   sh:node [ a sh:PropertyShape ;
@@ -201,10 +201,10 @@ and <code>dash:uriStart</code>.
 
 <p>
 It is obvious that some of these translations are not practical as
-they require a lot of duplication. However, when features are added to
-a language because there is some need for it. It could be an
+they require a lot of duplication. However, features are added to a
+language because there is some need for it. It could be an
 abbreviation of a common pattern (and adding explicit keywords can
-help optimizing certain shapes), or it could be something that seems
+help optimizing these shapes), or it could be something that seems
 not to be expressible but nevertheless desired by practitioners. I'm
 interested in solving the question whether these newly proposed
 features are already expressible. If they are, then it is useful to
@@ -253,7 +253,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2022-10-03 Mon 19:20.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2022-10-03 Mon 19:25.
 </div>
 </footer>
 </div>
