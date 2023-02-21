@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-10-03 Mon 14:08 -->
+<!-- 2023-02-21 Tue 10:54 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Shape Fragments and Subgraphs</title>
@@ -36,7 +36,7 @@ this leaves out what it means to "trace out" shapes from a
 graph. Consider the following example shape:
 </p>
 
-<pre class="example" id="org6ff4c07">
+<pre class="example" id="org436bbf5">
 :SocialShape a sh:PropertyShape ;
     sh:targetClass foaf:Person ;
     sh:path foaf:knows ;
@@ -50,7 +50,7 @@ you take all triples where the subject is the focus node and which
 also have <code>foaf:knows</code> as a predicate. Consider the following data
 graph:
 </p>
-<pre class="example" id="orgda1f0e3">
+<pre class="example" id="org6dad82b">
 :maxime a foaf:Person ;
     foaf:givenName "Maxime" ;
     foaf:knows :thomas ;
@@ -60,7 +60,7 @@ graph:
 <p>
 Using the ideas formulated earlier, we obtain the subgraph:
 </p>
-<pre class="example" id="org95230bd">
+<pre class="example" id="org1147acf">
 :maxime foaf:knows :thomas ;
     foaf:knows :anastasia ;
     foaf:knows :jan .
@@ -92,7 +92,7 @@ the triples.
 <p>
 Let's consider another example:
 </p>
-<pre class="example" id="orgf47b90c">
+<pre class="example" id="org8665fd9">
 :AntisocialShape a sh:PropertyShape ;
     sh:targetClass foaf:Person ;
     sh:path foaf:knows ;
@@ -102,7 +102,7 @@ Let's consider another example:
 Here, you are antisocial when you know at most two others. Consider a
 new data graph:
 </p>
-<pre class="example" id="org6d2413d">
+<pre class="example" id="orgf779f9e">
 :bob a foaf:Person ;
     foaf:givenName "Bob" ;
     foaf:knows :alice ;
@@ -172,7 +172,7 @@ may be of interest.
 <footer>
 <div class="copyright-container">
 <div class="copyright">
-Copyright &copy; 2020-2021 Maxime Jakubowski some rights reserved<br/>
+Copyright &copy; 2020-2022 Maxime Jakubowski some rights reserved<br/>
 Content is available under
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
 CC-BY-SA 4.0</a> unless otherwise noted

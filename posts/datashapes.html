@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-10-03 Mon 19:26 -->
+<!-- 2023-02-21 Tue 10:54 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Extending SHACL</title>
@@ -41,7 +41,7 @@ express them:
 subclass of <code>&lt;root&gt;</code> . This can be done in current SHACL using the
 property shape:
 </p>
-<pre class="example" id="orgf691433">
+<pre class="example" id="org59978ca">
 [ a sh:PropertyShape ;
   sh:path [ sh:zeroOrMorePath rdfs:subClassOf ] ;
   sh:hasValue &lt;root&gt;  
@@ -56,7 +56,7 @@ which cannot be done in SHACL.</li>
 when there is no node reachable by <code>&lt;path&gt;</code>, there may also be no node
 reachable by <code>&lt;prop&gt;</code>. This can be done in SHACL using the node shape:
 </p>
-<pre class="example" id="orgc898169">
+<pre class="example" id="orga301e48">
 [ a sh:NodeShape ;
   sh:and (
     [ sh:or (
@@ -83,7 +83,7 @@ reachable by <code>&lt;prop&gt;</code>. This can be done in SHACL using the node
 <code>sh:path &lt;path&gt;</code>, it means that all nodes reachable with <code>&lt;path&gt;</code> must
 also be reachable with <code>&lt;prop&gt;</code>. This can be done in SHACL:
 </p>
-<pre class="example" id="org9a1435e">
+<pre class="example" id="orga20d550">
 [ a sh:PropertyShape ;
   sh:path [ sh:alternativePath (&lt;path&gt; &lt;prop&gt;) ] ;
   sh:equals &lt;prop&gt;
@@ -95,7 +95,7 @@ shape with <code>sh:path &lt;path&gt;</code>, it means that there may not be a p
 <code>&lt;path&gt;</code> to the focusnode itself. This is an interesting shape that is
 expressible in SHACL <i>with <code>sh:equals</code> that support full paths</i>:
 </p>
-<pre class="example" id="orgeecea8f">
+<pre class="example" id="orgce19036">
 [ a sh:NodeShape
   sh:not [ a sh:PropertyShape ;
            sh:path &lt;path&gt; ;
@@ -109,7 +109,7 @@ with <code>sh:path &lt;path&gt;</code>, it means that every node reachable with 
 must also be reachable with the inverse of that <code>&lt;path&gt;</code>. This can be
 done in SHACL <i>with <code>sh:equals</code> that support full paths</i>:
 </p>
-<pre class="example" id="orgcbfb69d">
+<pre class="example" id="orga7c5a51">
 [ a sh:PropertyShape ;
   sh:path &lt;path&gt; ;
   sh:equals [ sh:alternativePath (&lt;path&gt; [ sh:inversePath &lt;path&gt; ] ) ]
@@ -122,7 +122,7 @@ assumption that rdf types are also SHACL shapes. Then, we say that
 are also the type or a superclass of the type of the focus node. We
 can then write this in SHACL as:
 </p>
-<pre class="example" id="org75ea57f">
+<pre class="example" id="org26f4062">
 [ a sh:NodeShape ;
   sh:closed true ;
   sh:property [ sh:path &lt;p1&gt; ] ;
@@ -138,7 +138,7 @@ shape with <code>sh:path &lt;path&gt;</code>, it means that there must exist a n
 reachable with <code>&lt;path&gt;</code> such that this node is one of <code>(&lt;c1&gt; &lt;c2&gt; &lt;c3&gt;
   ...)</code>. This can be expressed in SHACL:
 </p>
-<pre class="example" id="org376c604">
+<pre class="example" id="org0fe9ef8">
 [ a sh:NodeShape ;
   sh:or (
     [ sh:path &lt;path&gt; ;
@@ -160,7 +160,7 @@ reachable with <code>&lt;path&gt;</code> such that this node is one of <code>(&l
 <code>&lt;path&gt;</code> to a node with a <code>rdf:type</code> edge to the <code>&lt;c&gt;</code> node. This can be
 expressed in SHACL:
 </p>
-<pre class="example" id="orgbc526f9">
+<pre class="example" id="org5969aa4">
 [ a sh:PropertyShape ;
   sh:path ( &lt;path&gt; rdf:type ) ;
   sh:qualifiedValueShape [ sh:in (&lt;c&gt;) ] ;
@@ -174,7 +174,7 @@ with <code>sh:path &lt;path&gt;</code>, it means the focus node is the only node
 other words, every value node of the focus node must have exactly
 one inverse <code>&lt;path&gt;</code> to a node with <code>rdf:type &lt;c&gt;</code>.
 </p>
-<pre class="example" id="org0678045">
+<pre class="example" id="orgb84557e">
 [ a sh:PropertyShape ;
   sh:path &lt;path&gt; ;
   sh:node [ a sh:PropertyShape ;
@@ -240,7 +240,7 @@ feedback is welcome.
 <footer>
 <div class="copyright-container">
 <div class="copyright">
-Copyright &copy; 2020-2021 Maxime Jakubowski some rights reserved<br/>
+Copyright &copy; 2020-2022 Maxime Jakubowski some rights reserved<br/>
 Content is available under
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
 CC-BY-SA 4.0</a> unless otherwise noted
