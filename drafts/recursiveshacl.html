@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-02-21 Tue 10:54 -->
+<!-- 2023-03-06 Mon 18:10 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Recursion for SHACL</title>
@@ -34,117 +34,113 @@ existing academic work:
 The goal of this post is to clarify what it means to add recursion to
 SHACL, and to illustrate the ideas presented in these papers. I will
 discuss the different semantics without defining them first. The
-different semantics are:
+different semantics are: Supported Model semantics, Stratified
+Recursion, Stable Model semantics, and Well-Founded semantics.
 </p>
-<ul class="org-ul">
-<li>Stratified Recursion,</li>
-<li>Supported Model semantics,</li>
-<li>Stable Model semantics, and</li>
-<li>Well-Founded semantics.</li>
-</ul>
 
-<div id="outline-container-orgc51b7cb" class="outline-2">
-<h2 id="orgc51b7cb">Recursive Shapes</h2>
-<div class="outline-text-2" id="text-orgc51b7cb">
+<div id="outline-container-orgf90ba2e" class="outline-2">
+<h2 id="orgf90ba2e">Setting the stage</h2>
+<div class="outline-text-2" id="text-orgf90ba2e">
 <p>
-In SHACL, a shape is said to be recursive if it references itself
-directly or indirectly. For example,
+This post will use a running example to illustrate the different
+semantics. Consider an access control setting where users can be
+authorized to access resources or not. The RDF data will represent an
+overview of an access control setting where there are users and
+resources. Users can authorize other users to access files. There is a
+distinguised user, the administrator, who is authorized by default.
+</p>
+
+<p>
+A SHACL shape graph describes what is a valid access control setting,
+i.e., if the SHACL shapes graph validates, it is a valid access
+control setting.
+</p>
+
+<p>
+In this post, we'll use the standard SHACL prefix, <code>sh:</code>, and intoduce
+our own local prefix, <code>@prefix : &lt;https://mjakubowski.info/example/&gt;.</code>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbbb8d78" class="outline-2">
+<h2 id="orgbbb8d78">Positive recursion</h2>
+<div class="outline-text-2" id="text-orgbbb8d78">
+<p>
+A shape is said to be recursive if it references itself (directly,
+or indirectly). Consider the following access control shapes graph:
 </p>
 <div class="org-src-container">
 <pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">NodeShape</span> <span style="color: #b6a0ff;">;</span>
   <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">or</span> (
+    [ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">NodeShape</span> <span style="color: #b6a0ff;">;</span>
+      <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">hasValue</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">admin</span>
+    ]
     [ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">PropertyShape</span> <span style="color: #b6a0ff;">;</span>
-      <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">manuallyChecked</span> <span style="color: #b6a0ff;">;</span>
-      <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">hasValue</span> true 
+      <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> [ <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">inversePath</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> ] <span style="color: #b6a0ff;">;</span>
+      <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedValueShape</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #b6a0ff;">;</span>
+      <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedMinCount</span> 1
     ]
-    [ <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">and</span> (
-        [ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">PropertyShape</span> <span style="color: #b6a0ff;">;</span>
-          <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">connected</span> <span style="color: #b6a0ff;">;</span>
-          <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedValueShape</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #b6a0ff;">;</span>
-          <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedMinCount</span> 1 
-        ]
-        [ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">PropertyShape</span> <span style="color: #b6a0ff;">;</span>
-          <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">threatLevel</span> <span style="color: #b6a0ff;">;</span>
-          <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">hasValue</span> 0
-        ]
-      )
-    ]
-  )
+  ) <span style="color: #6ae4b9;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">targetSubjectsOf</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #b6a0ff;">.</span>
 </pre>
 </div>
 <p>
-In natural language, a node is <code>:Authorized</code> if it is
-<code>:manuallyChecked</code>, or if it has a <code>:threatLevel</code> of <code>0</code> and it is
-connected to an <code>:Authorized</code> node. Two things to note about this
-shape. First, it is clearly recursive, as it mentions itself through
-the <code>sh:qualifiedValueShape</code>. Second, it mentions itself <i>positively</i>.
-SHACL is a very powerful language that supports negation of shapes
-with the <code>sh:not</code> keyword.
-An example of mentioning itself <i>negatively</i> would be:
+In natural language, the <code>:admin</code> node is <code>:Authorized</code> and every node
+that is approved by an <code>:Authorized</code> node is also <code>:Authorized</code>. We
+target all nodes that access something. In essence, this shapes
+graph validates when all nodes that access a resource are
+<code>:Authorized</code>.
 </p>
-<div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #b6a0ff;">...</span>
-[ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">PropertyShape</span> <span style="color: #b6a0ff;">;</span>
-  <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">connected</span> <span style="color: #b6a0ff;">;</span>
-  <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedValueShape</span> [ <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">not</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> ] <span style="color: #b6a0ff;">;</span>
-  <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedMinCount</span> 1 
-]
-<span style="color: #b6a0ff;">...</span>
-</pre>
-</div>
+
 <p>
-Although in this example, that would make little sense.
+There are two things to note about this shape. First, it is clearly
+recursive, as it mentions itself through the
+<code>sh:qualifiedValueShape</code>. Second, it mentions itself <i>positively</i>, that
+is, the recursion does not happen through some kind of negation.
 </p>
 
 <p>
 When talking about recursion, negation adds an extra layer of
 complexity to the discussion. Almost all of the differences between
-the proposed semantics are due to negation. However, for the
-purposes of this post, I'll start without it and work our way up.
+the proposed semantics are due to negation. We'll discuss this
+further later in this post.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgbdc6efe" class="outline-2">
-<h2 id="orgbdc6efe">Basic Semantics for Recursion</h2>
-<div class="outline-text-2" id="text-orgbdc6efe">
+<div id="outline-container-org1f0d065" class="outline-2">
+<h2 id="org1f0d065">Semantics for positive recursion</h2>
+<div class="outline-text-2" id="text-org1f0d065">
 <p>
-We will discuss the basics through our <code>:Authorized</code> example. Consider
-the following data graph:
+Consider the following data graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">n0</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">manuallyChecked</span> true <span style="color: #b6a0ff;">;</span>
-    <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">connected</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">n1</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">n1</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">connected</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">n0</span> <span style="color: #b6a0ff;">;</span>
-    <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">connected</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">n2</span> <span style="color: #b6a0ff;">;</span>
-    <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">threatLevel</span> 0 <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">n2</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">connected</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">n1</span> <span style="color: #b6a0ff;">;</span>
-    <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">threatLevel</span> 0 <span style="color: #6ae4b9;">.</span>
-
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">n3</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">connected</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">n4</span> <span style="color: #b6a0ff;">;</span>
-    <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">threatLevel</span> 0 <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">n4</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">connected</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">n3</span> <span style="color: #b6a0ff;">;</span>
-    <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">threatLevel</span> 0 <span style="color: #b6a0ff;">.</span>
+<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">admin</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_a</span> <span style="color: #6ae4b9;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #b6a0ff;">.</span>
 </pre>
 </div>
 <p>
-Which of the nodes <code>:n0</code> through <code>:n4</code> could be said to be <code>:Authorized</code>?
-That is the question we need to be able to answer when we have
-defined recursive semantics for SHACL.
+Let us focus first on deciding which users could actually be
+assigned the <code>:Authorized</code> shape, forgetting for a moment the
+targeting specified in our shapes graph. Which of the users could be
+said to be <code>:Authorized</code>? That is the question we need to be able to
+answer when we have defined recursive semantics for SHACL.
 </p>
 
 <p>
 Stratified recursion, Well-Founded, and Stable Model semantics all
-agree that the set of <code>:Authorized</code> nodes needs to be: <code>:n0</code>, <code>:n1</code>, and
-<code>:n2</code>. Supported Model semantics, however, states that there is an
-additional possible set of <code>:Authorized</code> nodes: all of them!
+agree that the set of <code>:Authorized</code> nodes needs to be only <code>:admin</code> and
+<code>:user_a</code>. Supported Model semantics, however, states that there is an
+<i>additional</i> possible set of <code>:Authorized</code> nodes: all of them!
 </p>
 
 <p>
 The idea behind Supported Model semantics is that there is a
-possible assignment of shape names to nodes, such that all labelled
-nodes satisfy the shape. In this case, when both <code>:n3</code> and <code>:n4</code> are
-labelled to be <code>:Authorized</code>, then they also both satisfy the
+possible assignment of shape names to nodes, such that all assigned
+nodes satisfy the shape. In this case, when both <code>:user_b</code> and <code>:user_c</code>
+are assigned to be <code>:Authorized</code>, then they also both satisfy the
 <code>:Authorized</code> shape.
 </p>
 
@@ -153,11 +149,200 @@ For the other semantics, the idea in this case is to have a minimal
 assignment of shape names to nodes. This is commonly referred to as
 the <i>minimal model semantics</i> in logic programming literature.
 </p>
+
+<p>
+To complete our discussion on positive recursion, we will talk about
+targeting for a moment. Consider the following addition to the data
+graph:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">resource1</span> <span style="color: #b6a0ff;">.</span>
+</pre>
+</div>
+<p>
+It is easy to verify that this data graph does not validate under
+Stratified, Stable Model, and Well-Founded semantics. We can see
+this without knowing the definition, because none of these semantics
+ever assign <code>:Authorized</code> to <code>:user_b</code>.
+</p>
+
+<p>
+The Supported Model semantics has two possible assignments, but
+which one do we look at? There are two ways to look at this,
+according to the literature. First, <i>brave validation</i> states that we
+will just require there to be just <i>one</i> assignment that assigns
+<code>:user_b</code> to be <code>:Authorized</code>. The other, <i>cautious validation</i> states
+that we require <i>all</i> possible assignments to assign <code>:user_b</code> to be
+<code>:Authorized</code>. Thus, to make this concrete, if we use Supported Model
+semantics with cautious validation it will agree with the other
+semantics and the data graph will not validate. Otherwise, with
+brave validation, Supported Model semantics dictates that the data
+graph validates.
+</p>
+
+<p>
+These notions of brave and cautious validation will return shortly
+in the discussion of negation.
+</p>
 </div>
 </div>
 
-<div id="outline-container-org00a3ddc" class="outline-2">
-<h2 id="org00a3ddc">Adding negation</h2>
+<div id="outline-container-orgebca70a" class="outline-2">
+<h2 id="orgebca70a">Adding negation</h2>
+<div class="outline-text-2" id="text-orgebca70a">
+<p>
+We will add some negation. Consider the following addition to the
+shapes graph:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">PotentialThreath</span> <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">NodeShape</span> <span style="color: #b6a0ff;">;</span>
+  <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">property</span> [
+    <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #b6a0ff;">;</span>
+    <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">minCount</span> 1
+    ] <span style="color: #b6a0ff;">;</span>
+  <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">not</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #6ae4b9;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">PotentialThreath</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">targetSubjectsOf</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #b6a0ff;">.</span>
+</pre>
+</div>
+<p>
+In natural language, this shape states that a node is a
+<code>:PotentialThreath</code> if it is not <code>:Authorized</code> and accesses a
+resource. All nodes that access a resource and are not <code>:Authorized</code>
+are a <code>:PotentialThreath</code>.
+</p>
+
+<p>
+Considering the following data graph:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">admin</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_a</span> <span style="color: #6ae4b9;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">.</span>
+
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">resource1</span> <span style="color: #6ae4b9;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">resource1</span> <span style="color: #b6a0ff;">.</span>
+</pre>
+</div>
+<p>
+which users would be assigned to be a <code>:PotentialThreath</code>, and which
+ones would be assigned to be <code>:Authorized</code>? The idea of minimal
+assignments is not going to help us here. All users will be assigned
+a label. They are either <code>:Authorized</code> or a <code>:PotentialThreath</code>.
+</p>
+
+<p>
+Of course, the intuition is that <code>:user_b</code> and <code>:user_c</code> do not have any
+bussiness being <code>:Authorized</code>. They are only so in a self supporting
+way. So, we would likely want them to be a <code>:PotentialThreath</code>.
+</p>
+
+<p>
+One idea is to first resolve the <i>positive</i> recursion part of the
+shapes graph. So we would apply minimal models on <code>:Authorized</code> and
+afterwards try to assign <code>:PotentialThreath</code>. This is exactly the idea
+behind Stratified Recursion. This only works when we look at the
+shapes graph in "layers" where we first resolve the positive
+recursion and work our way up. That is also where the name comes
+from "stratified" is an archaic way of saying "layered". Again,
+Stable Model and Well-Founded semantics agree with this
+approach. Only Supported Model semantics, like before, considers two
+possible assignments. The one where all users are <code>:Authorized</code> and
+the one where <code>:user_b</code> and <code>:user_c</code> are a <code>:PotentialThreath</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga5fa053" class="outline-2">
+<h2 id="orga5fa053">We can not always stratify easily</h2>
+<div class="outline-text-2" id="text-orga5fa053">
+<p>
+Indeed, we cannot always stratify easily as discussed
+above. Consider a new shapes graph:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">NodeShape</span> <span style="color: #b6a0ff;">;</span>
+  <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">or</span> (
+    [ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">NodeShape</span> <span style="color: #b6a0ff;">;</span>
+      <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">hasValue</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">admin</span>
+    ]
+    [ <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">and</span> (
+        [ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">PropertyShape</span> <span style="color: #b6a0ff;">;</span>
+          <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> [ <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">inversePath</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> ] <span style="color: #b6a0ff;">;</span>
+          <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedValueShape</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #b6a0ff;">;</span>
+          <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedMinCount</span> 1
+        ]
+        [ <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">not</span> [ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">PropertyShape</span> <span style="color: #b6a0ff;">;</span>
+                   <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> [ <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">inversePath</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">reports</span> ] <span style="color: #b6a0ff;">;</span>
+                   <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedValueShape</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #b6a0ff;">;</span>
+                   <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedMinCount</span> 1
+                 ]
+        ]
+     )
+    ]
+  ) <span style="color: #6ae4b9;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">targetSubjectsOf</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #b6a0ff;">.</span>
+</pre>
+</div>
+<p>
+this shape is very similar to the <code>:Authorized</code> shape from before,
+only now, you can only be <code>:Authorized</code> if you are also never reported
+by an <code>:Authorized</code> user.
+</p>
+
+<p>
+Note that this shape cannot be stratified as we did with the
+<code>:PotentialThreath</code> before. It directly references itself
+negatively. We will next look at the following data graph scenario:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">admin</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_a</span> <span style="color: #b6a0ff;">;</span>
+  <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_a</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_d</span> <span style="color: #b6a0ff;">.</span>
+</pre>
+</div>
+<p>
+By now, you should be thinking about the natural question: what
+users should be <code>:Authorized</code> here? Clearly, all of them. There is
+nothing special going on as long as we do not have anyone reporting
+anyone. We will add the following line:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">reports</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #b6a0ff;">.</span>
+</pre>
+</div>
+<p>
+Now, because <code>:user_c</code> has been reported, they are no longer
+<code>:Authorized</code> and neither is <code>:user_d</code>, even though <code>:user_d</code> has not been
+explicitly reported. All this the semantics agree on. But what if we add:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_a</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">reports</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">reports</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_a</span> <span style="color: #b6a0ff;">.</span>
+</pre>
+</div>
+<p>
+to the data graph?
+</p>
+
+<p>
+The Stable Model semantics will tell you there are two possible
+assignments: one where <code>:user_a</code> is <code>:Authorized</code> and <code>:user_b</code> is not,
+and one where the opposite is true. Again, to know how to choose
+between these two assignments, we can apply the ideas of cautions
+and brave validation.
+</p>
+
+<p>
+The Well-Founded semantics will take a different approach. It will
+say the assignment of <code>:Authorized</code> for <code>:user_a</code> and <code>:user_b</code> are
+unknown.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf13496b" class="outline-2">
+<h2 id="orgf13496b">Concluding thoughts</h2>
 </div>
 </div>
 <div id="postamble" class="status">
@@ -178,7 +363,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2023-02-21 Tue 10:52.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2023-03-06 Mon 18:09.
 </div>
 </footer>
 </div>
