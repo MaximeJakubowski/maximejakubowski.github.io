@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-03-07 Tue 11:58 -->
+<!-- 2023-03-07 Tue 12:41 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Recursion for SHACL</title>
@@ -201,15 +201,15 @@ shapes graph:
     <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">minCount</span> 1
     ] <span style="color: #b6a0ff;">;</span>
   <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">not</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">PotentialThreat</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">targetSubjectsOf</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">isblacklisted</span> <span style="color: #b6a0ff;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">PotentialThreat</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">targetClass</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">BlacklistedUser</span> <span style="color: #b6a0ff;">.</span>
 </pre>
 </div>
 <p>
 In natural language, this shape states that a node is a
 <code>:PotentialThreat</code> if it is not <code>:Authorized</code> and accesses a
 resource. All nodes that access a resource and are not <code>:Authorized</code>
-are a <code>:PotentialThreat</code>. We want to ensure that all users that are
-blacklisted are a <code>:PotentialThreat</code>.
+are a <code>:PotentialThreat</code>. We want to ensure that all users that are a
+<code>:BlacklistedUser</code> are a <code>:PotentialThreat</code>.
 </p>
 
 <p>
@@ -223,7 +223,7 @@ Considering the following data graph:
 <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">resource1</span> <span style="color: #6ae4b9;">.</span>
 <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">resource1</span> <span style="color: #6ae4b9;">.</span>
 
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">isblacklisted</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">yes</span> <span style="color: #b6a0ff;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">BlacklistedUser</span> <span style="color: #b6a0ff;">.</span>
 </pre>
 </div>
 <p>
@@ -420,7 +420,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2023-03-07 Tue 11:57.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2023-03-07 Tue 12:41.
 </div>
 </footer>
 </div>
