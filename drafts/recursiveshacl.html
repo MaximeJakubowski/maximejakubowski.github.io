@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-03-06 Mon 18:10 -->
+<!-- 2023-03-08 Wed 18:00 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Recursion for SHACL</title>
@@ -38,34 +38,36 @@ different semantics are: Supported Model semantics, Stratified
 Recursion, Stable Model semantics, and Well-Founded semantics.
 </p>
 
-<div id="outline-container-orgf90ba2e" class="outline-2">
-<h2 id="orgf90ba2e">Setting the stage</h2>
-<div class="outline-text-2" id="text-orgf90ba2e">
+<div id="outline-container-org9813569" class="outline-2">
+<h2 id="org9813569">Setting the stage</h2>
+<div class="outline-text-2" id="text-org9813569">
 <p>
 This post will use a running example to illustrate the different
-semantics. Consider an access control setting where users can be
-authorized to access resources or not. The RDF data will represent an
-overview of an access control setting where there are users and
-resources. Users can authorize other users to access files. There is a
-distinguised user, the administrator, who is authorized by default.
+semantics. Consider an access control setting, where users can be
+authorized to access resources or not. The RDF data will represent
+an overview of an access control setting where there are users and
+resources. Users can authorize other users to access files. There is
+a distinguished user, the administrator, who is authorized by
+default.
 </p>
 
 <p>
-A SHACL shape graph describes what is a valid access control setting,
-i.e., if the SHACL shapes graph validates, it is a valid access
-control setting.
+A SHACL shape graph describes what is a valid access control
+setting, i.e., if the SHACL shapes graph validates, it is a valid
+access control setting.
 </p>
 
 <p>
-In this post, we'll use the standard SHACL prefix, <code>sh:</code>, and intoduce
-our own local prefix, <code>@prefix : &lt;https://mjakubowski.info/example/&gt;.</code>
+In this post, we'll use the standard SHACL prefix, <code>sh:</code>, and
+introduce our own local prefix, <code>@prefix :
+  &lt;https://mjakubowski.info/example/&gt;.</code>
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgbbb8d78" class="outline-2">
-<h2 id="orgbbb8d78">Positive recursion</h2>
-<div class="outline-text-2" id="text-orgbbb8d78">
+<div id="outline-container-org27dce4d" class="outline-2">
+<h2 id="org27dce4d">Positive recursion</h2>
+<div class="outline-text-2" id="text-org27dce4d">
 <p>
 A shape is said to be recursive if it references itself (directly,
 or indirectly). Consider the following access control shapes graph:
@@ -102,16 +104,16 @@ is, the recursion does not happen through some kind of negation.
 
 <p>
 When talking about recursion, negation adds an extra layer of
-complexity to the discussion. Almost all of the differences between
-the proposed semantics are due to negation. We'll discuss this
-further later in this post.
+complexity to the discussion. Almost all the differences between the
+proposed semantics are due to negation. We'll discuss this further
+later in this post.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org1f0d065" class="outline-2">
-<h2 id="org1f0d065">Semantics for positive recursion</h2>
-<div class="outline-text-2" id="text-org1f0d065">
+<div id="outline-container-orge1d00a9" class="outline-2">
+<h2 id="orge1d00a9">Semantics for positive recursion</h2>
+<div class="outline-text-2" id="text-orge1d00a9">
 <p>
 Consider the following data graph:
 </p>
@@ -141,7 +143,10 @@ The idea behind Supported Model semantics is that there is a
 possible assignment of shape names to nodes, such that all assigned
 nodes satisfy the shape. In this case, when both <code>:user_b</code> and <code>:user_c</code>
 are assigned to be <code>:Authorized</code>, then they also both satisfy the
-<code>:Authorized</code> shape.
+<code>:Authorized</code> shape.  Indeed, <code>:user_b</code> is authorized by an authorized
+user (<code>:user_c</code>) and similarly for <code>:user_b</code>. Clearly, this does not
+match our intention, since this would allow every user to authorize
+themselves!
 </p>
 
 <p>
@@ -179,36 +184,32 @@ semantics and the data graph will not validate. Otherwise, with
 brave validation, Supported Model semantics dictates that the data
 graph validates.
 </p>
-
-<p>
-These notions of brave and cautious validation will return shortly
-in the discussion of negation.
-</p>
 </div>
 </div>
 
-<div id="outline-container-orgebca70a" class="outline-2">
-<h2 id="orgebca70a">Adding negation</h2>
-<div class="outline-text-2" id="text-orgebca70a">
+<div id="outline-container-orgc398d27" class="outline-2">
+<h2 id="orgc398d27">Adding negation</h2>
+<div class="outline-text-2" id="text-orgc398d27">
 <p>
 We will add some negation. Consider the following addition to the
 shapes graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">PotentialThreath</span> <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">NodeShape</span> <span style="color: #b6a0ff;">;</span>
+<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">PotentialThreat</span> <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">NodeShape</span> <span style="color: #b6a0ff;">;</span>
   <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">property</span> [
     <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #b6a0ff;">;</span>
     <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">minCount</span> 1
     ] <span style="color: #b6a0ff;">;</span>
   <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">not</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">PotentialThreath</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">targetSubjectsOf</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #b6a0ff;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">PotentialThreat</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">targetClass</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">BlacklistedUser</span> <span style="color: #b6a0ff;">.</span>
 </pre>
 </div>
 <p>
 In natural language, this shape states that a node is a
-<code>:PotentialThreath</code> if it is not <code>:Authorized</code> and accesses a
+<code>:PotentialThreat</code> if it is not <code>:Authorized</code> and accesses a
 resource. All nodes that access a resource and are not <code>:Authorized</code>
-are a <code>:PotentialThreath</code>.
+are a <code>:PotentialThreat</code>. We want to ensure that all users that are a
+<code>:BlacklistedUser</code> are a <code>:PotentialThreat</code>.
 </p>
 
 <p>
@@ -220,26 +221,28 @@ Considering the following data graph:
 <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">.</span>
 
 <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">resource1</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">resource1</span> <span style="color: #b6a0ff;">.</span>
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">resource1</span> <span style="color: #6ae4b9;">.</span>
+
+<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">BlacklistedUser</span> <span style="color: #b6a0ff;">.</span>
 </pre>
 </div>
 <p>
-which users would be assigned to be a <code>:PotentialThreath</code>, and which
+which users would be assigned to be a <code>:PotentialThreat</code>, and which
 ones would be assigned to be <code>:Authorized</code>? The idea of minimal
 assignments is not going to help us here. All users will be assigned
-a label. They are either <code>:Authorized</code> or a <code>:PotentialThreath</code>.
+a label. They are either <code>:Authorized</code> or a <code>:PotentialThreat</code>.
 </p>
 
 <p>
 Of course, the intuition is that <code>:user_b</code> and <code>:user_c</code> do not have any
-bussiness being <code>:Authorized</code>. They are only so in a self supporting
-way. So, we would likely want them to be a <code>:PotentialThreath</code>.
+bussiness being <code>:Authorized</code>. They are only so in a self-supporting
+way. So, we would likely want them to be a <code>:PotentialThreat</code>.
 </p>
 
 <p>
 One idea is to first resolve the <i>positive</i> recursion part of the
 shapes graph. So we would apply minimal models on <code>:Authorized</code> and
-afterwards try to assign <code>:PotentialThreath</code>. This is exactly the idea
+afterward try to assign <code>:PotentialThreat</code>. This is exactly the idea
 behind Stratified Recursion. This only works when we look at the
 shapes graph in "layers" where we first resolve the positive
 recursion and work our way up. That is also where the name comes
@@ -247,14 +250,26 @@ from "stratified" is an archaic way of saying "layered". Again,
 Stable Model and Well-Founded semantics agree with this
 approach. Only Supported Model semantics, like before, considers two
 possible assignments. The one where all users are <code>:Authorized</code> and
-the one where <code>:user_b</code> and <code>:user_c</code> are a <code>:PotentialThreath</code>.
+the one where <code>:user_b</code> and <code>:user_c</code> are a <code>:PotentialThreat</code>.
+</p>
+
+<p>
+An interesting remark here is that with Supported Model semantics
+neither brave nor cautious validation will always result in a
+satisfying validation result. Indeed, with cautious validation
+<code>:user_b</code> will not be marked a <code>:PotentialThreat</code> because there is an
+assignment where <code>:user_b</code> is <code>:Authorized</code>. With brave validation, we
+can do whatever we want. If <code>:user_b</code> is not blacklisted, it would be
+fine, because there is an assignment where <code>:user_b</code> is <code>:Authorized</code>!
+In my personal view, this excludes Supported Model semantics as a
+suitable semantics for recursive SHACL.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orga5fa053" class="outline-2">
-<h2 id="orga5fa053">We can not always stratify easily</h2>
-<div class="outline-text-2" id="text-orga5fa053">
+<div id="outline-container-org397d160" class="outline-2">
+<h2 id="org397d160">We can not always stratify easily</h2>
+<div class="outline-text-2" id="text-org397d160">
 <p>
 Indeed, we cannot always stratify easily as discussed
 above. Consider a new shapes graph:
@@ -291,7 +306,7 @@ by an <code>:Authorized</code> user.
 
 <p>
 Note that this shape cannot be stratified as we did with the
-<code>:PotentialThreath</code> before. It directly references itself
+<code>:PotentialThreat</code> before. It directly references itself
 negatively. We will next look at the following data graph scenario:
 </p>
 <div class="org-src-container">
@@ -334,15 +349,57 @@ and brave validation.
 </p>
 
 <p>
-The Well-Founded semantics will take a different approach. It will
-say the assignment of <code>:Authorized</code> for <code>:user_a</code> and <code>:user_b</code> are
-unknown.
+The Well-Founded semantics will take a different approach. Unlike
+all the semantics discussed before, it will not just assign shapes
+to nodes. In the Well-Founded semantics, assignments are
+<i>three-valued</i>. Assignments are true, false, or unknown. In this
+example, it will say the assignment of <code>:Authorized</code> for <code>:user_a</code> and
+<code>:user_b</code> are unknown.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgf13496b" class="outline-2">
-<h2 id="orgf13496b">Concluding thoughts</h2>
+<div id="outline-container-orgcdec5ca" class="outline-2">
+<h2 id="orgcdec5ca">Concluding thoughts</h2>
+<div class="outline-text-2" id="text-orgcdec5ca">
+<p>
+The ideas can be summarized as follows. First, Stratified Recursion
+is the only approach that somehow restricts the kinds of recursion
+you can write. The other approaches are also nicely defined on all
+possible shapes graphs. Second, Stable Model and Supported Model
+semantics consider multiple possible assignments. In these two
+semantics, it is useful to then distinguish cautious and brave
+validation. Third, the Well-Founded semantics considers three-valued
+assignments, but only one assignment is defined for a shapes graph,
+disregarding the need for the cautious and brave
+distinction. Finally, all semantics, except for Supported Model
+semantics, agree if we only consider shape graphs with only positive
+recursion &#x2014; even on Stratified shape graphs!
+</p>
+
+<p>
+In essence, the purpose of this post is to clear up the different
+ideas for semantics for recursive SHACL. They are all based on
+research in logic programming. There, they have been studies and
+evaluated to really correspond to peoples' intuitions. Therefore,
+when we apply them to SHACL, we get well-defined recursive
+semantics.
+</p>
+
+<p>
+If I would suggest anything, I would say the proper recursive
+semantics for SHACL should be the Well-Founded semantics. Shapes are
+<i>definitions</i> and the Well-Founded semantics are very well suited for
+this. We defined the Well-Founded semantics for SHACL (and also by
+extension most other semantics coming from logic programming) in
+our work <a href="https://arxiv.org/abs/2109.08285">Fixpoint Semantics for Recursive SHACL</a>. 
+</p>
+
+<p>
+Thanks to <a href="https://www.bartbogaerts.eu/index.php">Bart Bogaerts</a> for the corrections and inspiring
+suggestions.
+</p>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
@@ -363,7 +420,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2023-03-06 Mon 18:09.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2023-03-07 Tue 12:39.
 </div>
 </footer>
 </div>

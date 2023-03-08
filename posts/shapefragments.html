@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-03-07 Tue 11:44 -->
+<!-- 2023-03-08 Wed 18:00 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Shape Fragments and Subgraphs</title>
@@ -36,7 +36,7 @@ this leaves out what it means to "trace out" shapes from a
 graph. Consider the following example shape:
 </p>
 
-<pre class="example" id="orga53fc54">
+<pre class="example" id="org6da98da">
 :SocialShape a sh:PropertyShape ;
     sh:targetClass foaf:Person ;
     sh:path foaf:knows ;
@@ -50,7 +50,7 @@ you take all triples where the subject is the focus node and which
 also have <code>foaf:knows</code> as a predicate. Consider the following data
 graph:
 </p>
-<pre class="example" id="org91bbb31">
+<pre class="example" id="org9a9dfa9">
 :maxime a foaf:Person ;
     foaf:givenName "Maxime" ;
     foaf:knows :thomas ;
@@ -60,7 +60,7 @@ graph:
 <p>
 Using the ideas formulated earlier, we obtain the subgraph:
 </p>
-<pre class="example" id="orge0f174c">
+<pre class="example" id="org051e71f">
 :maxime foaf:knows :thomas ;
     foaf:knows :anastasia ;
     foaf:knows :jan .
@@ -92,7 +92,7 @@ the triples.
 <p>
 Let's consider another example:
 </p>
-<pre class="example" id="orgabcf987">
+<pre class="example" id="org01d095d">
 :AntisocialShape a sh:PropertyShape ;
     sh:targetClass foaf:Person ;
     sh:path foaf:knows ;
@@ -102,7 +102,7 @@ Let's consider another example:
 Here, you are antisocial when you know at most two others. Consider a
 new data graph:
 </p>
-<pre class="example" id="org2ec6a70">
+<pre class="example" id="orge46dbf3">
 :bob a foaf:Person ;
     foaf:givenName "Bob" ;
     foaf:knows :alice ;
