@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-03-08 Wed 18:00 -->
+<!-- 2023-06-14 Wed 10:51 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Recursion for SHACL</title>
 <meta name="author" content="Maxime Jakubowski" />
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" href="/css/style.css" type="text/css"/>
+<link rel="stylesheet" href="/css/style.css"
+type="text/css"/><meta name="google-site-verification"
+content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
 </head>
 <body>
 <div id="preamble" class="status">
@@ -38,9 +40,9 @@ different semantics are: Supported Model semantics, Stratified
 Recursion, Stable Model semantics, and Well-Founded semantics.
 </p>
 
-<div id="outline-container-orgc8d9ac7" class="outline-2">
-<h2 id="orgc8d9ac7">Setting the stage</h2>
-<div class="outline-text-2" id="text-orgc8d9ac7">
+<div id="outline-container-org3d14311" class="outline-2">
+<h2 id="org3d14311">Setting the stage</h2>
+<div class="outline-text-2" id="text-org3d14311">
 <p>
 This post will use a running example to illustrate the different
 semantics. Consider an access control setting, where users can be
@@ -65,26 +67,26 @@ introduce our own local prefix, <code>@prefix :
 </div>
 </div>
 
-<div id="outline-container-orga7d8938" class="outline-2">
-<h2 id="orga7d8938">Positive recursion</h2>
-<div class="outline-text-2" id="text-orga7d8938">
+<div id="outline-container-orgfefb7fc" class="outline-2">
+<h2 id="orgfefb7fc">Positive recursion</h2>
+<div class="outline-text-2" id="text-orgfefb7fc">
 <p>
 A shape is said to be recursive if it references itself (directly,
 or indirectly). Consider the following access control shapes graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">NodeShape</span> <span style="color: #b6a0ff;">;</span>
-  <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">or</span> (
-    [ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">NodeShape</span> <span style="color: #b6a0ff;">;</span>
-      <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">hasValue</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">admin</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">or</span> (
+    [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">hasValue</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin</span>
     ]
-    [ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">PropertyShape</span> <span style="color: #b6a0ff;">;</span>
-      <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> [ <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">inversePath</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> ] <span style="color: #b6a0ff;">;</span>
-      <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedValueShape</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #b6a0ff;">;</span>
-      <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedMinCount</span> 1
+    [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inversePath</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> ] <span style="color: #531ab6;">;</span>
+      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #531ab6;">;</span>
+      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1
     ]
-  ) <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">targetSubjectsOf</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #b6a0ff;">.</span>
+  ) <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">targetSubjectsOf</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 <p>
@@ -111,16 +113,16 @@ later in this post.
 </div>
 </div>
 
-<div id="outline-container-orge492bf1" class="outline-2">
-<h2 id="orge492bf1">Semantics for positive recursion</h2>
-<div class="outline-text-2" id="text-orge492bf1">
+<div id="outline-container-orge0c426b" class="outline-2">
+<h2 id="orge0c426b">Semantics for positive recursion</h2>
+<div class="outline-text-2" id="text-orge0c426b">
 <p>
 Consider the following data graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">admin</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_a</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #b6a0ff;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 <p>
@@ -161,7 +163,7 @@ targeting for a moment. Consider the following addition to the data
 graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">resource1</span> <span style="color: #b6a0ff;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 <p>
@@ -187,21 +189,21 @@ graph validates.
 </div>
 </div>
 
-<div id="outline-container-orge9e0087" class="outline-2">
-<h2 id="orge9e0087">Adding negation</h2>
-<div class="outline-text-2" id="text-orge9e0087">
+<div id="outline-container-org3d5ea86" class="outline-2">
+<h2 id="org3d5ea86">Adding negation</h2>
+<div class="outline-text-2" id="text-org3d5ea86">
 <p>
 We will add some negation. Consider the following addition to the
 shapes graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">PotentialThreat</span> <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">NodeShape</span> <span style="color: #b6a0ff;">;</span>
-  <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">property</span> [
-    <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #b6a0ff;">;</span>
-    <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">minCount</span> 1
-    ] <span style="color: #b6a0ff;">;</span>
-  <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">not</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">PotentialThreat</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">targetClass</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">BlacklistedUser</span> <span style="color: #b6a0ff;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">PotentialThreat</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">property</span> [
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">minCount</span> 1
+    ] <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">not</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">PotentialThreat</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">targetClass</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">BlacklistedUser</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 <p>
@@ -216,14 +218,14 @@ are a <code>:PotentialThreat</code>. We want to ensure that all users that are a
 Considering the following data graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">admin</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_a</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">.</span>
 
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">resource1</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">resource1</span> <span style="color: #6ae4b9;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #005f5f;">.</span>
 
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">BlacklistedUser</span> <span style="color: #b6a0ff;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">BlacklistedUser</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 <p>
@@ -267,35 +269,35 @@ suitable semantics for recursive SHACL.
 </div>
 </div>
 
-<div id="outline-container-orgc92ebf6" class="outline-2">
-<h2 id="orgc92ebf6">We can not always stratify easily</h2>
-<div class="outline-text-2" id="text-orgc92ebf6">
+<div id="outline-container-org68bf041" class="outline-2">
+<h2 id="org68bf041">We can not always stratify easily</h2>
+<div class="outline-text-2" id="text-org68bf041">
 <p>
 Indeed, we cannot always stratify easily as discussed
 above. Consider a new shapes graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">NodeShape</span> <span style="color: #b6a0ff;">;</span>
-  <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">or</span> (
-    [ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">NodeShape</span> <span style="color: #b6a0ff;">;</span>
-      <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">hasValue</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">admin</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">or</span> (
+    [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">hasValue</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin</span>
     ]
-    [ <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">and</span> (
-        [ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">PropertyShape</span> <span style="color: #b6a0ff;">;</span>
-          <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> [ <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">inversePath</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> ] <span style="color: #b6a0ff;">;</span>
-          <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedValueShape</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #b6a0ff;">;</span>
-          <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedMinCount</span> 1
+    [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">and</span> (
+        [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+          <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inversePath</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> ] <span style="color: #531ab6;">;</span>
+          <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #531ab6;">;</span>
+          <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1
         ]
-        [ <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">not</span> [ <span style="color: #b6a0ff;">a</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">PropertyShape</span> <span style="color: #b6a0ff;">;</span>
-                   <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">path</span> [ <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">inversePath</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">reports</span> ] <span style="color: #b6a0ff;">;</span>
-                   <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedValueShape</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #b6a0ff;">;</span>
-                   <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">qualifiedMinCount</span> 1
+        [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">not</span> [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+                   <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inversePath</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">reports</span> ] <span style="color: #531ab6;">;</span>
+                   <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #531ab6;">;</span>
+                   <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1
                  ]
         ]
      )
     ]
-  ) <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">Authorized</span> <span style="color: #6ae4b9;">sh:</span><span style="color: #00bcff;">targetSubjectsOf</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">accesses</span> <span style="color: #b6a0ff;">.</span>
+  ) <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">targetSubjectsOf</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 <p>
@@ -310,10 +312,10 @@ Note that this shape cannot be stratified as we did with the
 negatively. We will next look at the following data graph scenario:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">admin</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_a</span> <span style="color: #b6a0ff;">;</span>
-  <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_a</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">approves</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_d</span> <span style="color: #b6a0ff;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_d</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 <p>
@@ -323,7 +325,7 @@ nothing special going on as long as we do not have anyone reporting
 anyone. We will add the following line:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">reports</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_c</span> <span style="color: #b6a0ff;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">reports</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 <p>
@@ -332,8 +334,8 @@ Now, because <code>:user_c</code> has been reported, they are no longer
 explicitly reported. All this the semantics agree on. But what if we add:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_a</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">reports</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">.</span>
-<span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_b</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">reports</span> <span style="color: #6ae4b9;">:</span><span style="color: #00bcff;">user_a</span> <span style="color: #b6a0ff;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">reports</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">reports</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 <p>
@@ -359,9 +361,9 @@ example, it will say the assignment of <code>:Authorized</code> for <code>:user_
 </div>
 </div>
 
-<div id="outline-container-orgd4cf1f2" class="outline-2">
-<h2 id="orgd4cf1f2">Concluding thoughts</h2>
-<div class="outline-text-2" id="text-orgd4cf1f2">
+<div id="outline-container-orgfb3ad00" class="outline-2">
+<h2 id="orgfb3ad00">Concluding thoughts</h2>
+<div class="outline-text-2" id="text-orgfb3ad00">
 <p>
 The ideas can be summarized as follows. First, Stratified Recursion
 is the only approach that somehow restricts the kinds of recursion
