@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2024-05-29 Wed 11:19 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Expressiveness of SHACL Features</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="Maxime Jakubowski">
+<link rel="stylesheet" href="/css/style.css"
+type="text/css"/><meta name="google-site-verification"
+content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
+</head>
+<body>
+<div id="preamble" class="status">
+
+<nav id="post-home">
+<ul><li><a href="/">Home</a></li></ul>
+</nav>
+</div>
+<div id="content">
+<header>
+<h1 class="title">Expressiveness of SHACL Features</h1>
+</header><div id="phdbox">
+<p>
+Note: This post is an adaptation of <a href="phd.html">Section 1.2 of my PhD thesis</a>, and
+serves as a general intro to <a href="https://lmcs.episciences.org/13143/pdf">our paper on the subject</a>. The purpose of
+publishing it as a standalone blogpost is to further disseminate my
+writings. It is part of a short series of posts representing the
+Introduction of my thesis:
+</p>
+<ul class="org-ul">
+<li><a href="shaclnutshell.html">Section 1.1: SHACL in a nutshell</a></li>
+<li>Section 1.2: Expressiveness (this post)</li>
+<li><a href="recursiveshacl.html">Section 1.3: Recursion</a></li>
+<li><a href="shaclprovenance.html">Section 1.4: Provenance</a></li>
+</ul>
+</div>
+
+<p>
+Given the definition of SHACL as a constraint language, users are
+often interested in what you can actually <i>do</i> with it; what shapes can
+you actually write? When a language is defined, many criteria are
+postulated on what the language should be able to describe. Often,
+these are then <i>directly</i> included in the language. A simple example is
+the <i>class constraint component</i> in SHACL. This allows for writing
+shapes stating that the focus node must be of a certain RDF class (or
+subclass thereof). It is easy to observe this feature is technically
+redundant: if we would remove this constraint component from SHACL,
+the expressive power would remain the same, because we can already
+express it using other constraint components. For example, given an
+IRI <code>:c</code> every shape of the form:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">class</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">c</span>
+]
+</pre>
+</div>
+
+<p>
+can be written as the shape:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> ( [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">zeroOrMorePath</span> <span style="color: #005a5f;">rdfs:</span><span style="color: #0000c0;">subClassOf</span> ] <span style="color: #005a5f;">rdf:</span><span style="color: #0000c0;">type</span> ) <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">hasValue</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">c</span>
+]
+</pre>
+</div>
+
+<p>
+Clearly, constraints about classes are useful, so it is included in
+the language. However, our example shows that the complex path
+expressions are more fundamental to SHACL. We have these, so we can
+already do class constraints.
+</p>
+
+<p>
+This discussion of the class constraint component is quite clear cut;
+it is easy to see that it is expressible by other features. Now, a
+natural question arises: does this also happen for other constraint
+components? Can we, for example, express the <i>equals constraint
+component</i> using other SHACL features? In this case it is not clear
+whether this is possible, but how can you be certain that it is <i>not</i>
+expressible? These are the expressiveness questions we investigate in
+<a href="https://lmcs.episciences.org/13143/pdf">our paper</a> (and to actually answer the question, no, you cannot
+express equality with the other features).
+</p>
+
+<p>
+To add to the relevance of this kind of investigation, the SHACL
+community is interested in <i>extending</i> SHACL with other constraint
+components called the <a href="https://datashapes.org/constraints.html">DASH Constraint Components</a>. It turns out that
+most of these constraint components are not easily (or at all)
+expressible with SHACL as it is, but if we extend SHACL with a more
+powerful version of the equality constraint component, <a href="datashapes.html">the DASH
+extensions become expressible</a>! As a concrete example, DASH proposes a
+constraint <code>dash:nonRecursive</code> on property shapes that states
+that there must not be a path (from <code>sh:path</code>) from the focus
+node, to the focus node. In other words, there may not be a self-loop
+(following the path) in the data graph for the focus node. This can be
+expressed with the shape:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">noLoop</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">not</span> [ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
+           <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #5317ac;">;</span>
+           <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">equals</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">zeroOrOnePath</span> <span style="color: #721045;">&lt;path&gt;</span> ]
+         ] <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+<p>
+However, this shape is technically not a correct SHACL shape because
+the <code>sh:equals</code> keyword may only have IRIs as their value, not
+blank nodes (and thus not paths). Nevertheless, the meaning is clear.
+</p>
+
+<p>
+The point here is not to say that DASH is superfluous, rather, it is
+simply to give insight in what is fundamentally happening when you add
+features to SHACL. It turns out that adding full-path support to the
+equality feature lets us also express some other DASH constraints,
+indicating that adding full equality to SHACL is useful. Furthermore,
+it may give insights to developers implementing SHACL validators: not
+every added feature requires implementing new algorithms to support
+that feature.
+</p>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="copyright-container">
+<div class="copyright">
+Copyright &copy; 2020-2023 Maxime Jakubowski some rights reserved<br/>
+Content is available under
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+CC-BY-SA 4.0</a> unless otherwise noted
+</div>
+<div class="cc-badge">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License"
+     src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+</a>
+</div>
+</div>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2024-05-29 Wed 11:17.
+</div>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2024-05-29 Wed 11:19 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SHACL in a nutshell</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="Maxime Jakubowski">
+<link rel="stylesheet" href="/css/style.css"
+type="text/css"/><meta name="google-site-verification"
+content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
+</head>
+<body>
+<div id="preamble" class="status">
+
+<nav id="post-home">
+<ul><li><a href="/">Home</a></li></ul>
+</nav>
+</div>
+<div id="content">
+<header>
+<h1 class="title">SHACL in a nutshell</h1>
+</header><div id="phdbox">
+<p>
+Note: This post is an adaptation of <a href="phd.html">Section 1.1 of my PhD thesis</a>. The
+purpose of publishing it as a standalone blogpost is to further
+disseminate my writings. It is part of a short series of posts
+representing the Introduction of my thesis:
+</p>
+<ul class="org-ul">
+<li>Section 1.1: SHACL in a nutshell (this post)</li>
+<li><a href="shaclexpressiveness.html">Section 1.2: Expressiveness</a></li>
+<li><a href="recursiveshacl.html">Section 1.3: Recursion</a></li>
+<li><a href="shaclprovenance.html">Section 1.4: Provenance</a></li>
+</ul>
+</div>
+
+<p>
+The main purpose of SHACL is to write a schema, in SHACL terminology
+called a <i>shapes graph</i> (The reason this is called a "graph" is that the
+SHACL syntax is written in RDF.), that describes the expected
+structure of an RDF graph. The RDF graph of which some structure is
+expected is referred to as the <i>data graph</i>. Given a shapes graph and a
+data graph, the main task is to check whether the given data graph
+satisfies the requirements specified by the shapes graph. This task is
+called <i>conformance checking</i> and it is done by software called a
+<i>(SHACL) validator</i>. Furthermore, it is often expected of validators to
+not only check for conformance, but to also generate a <i>validation
+report</i> specifying which nodes violate which parts of the shapes graph.
+</p>
+
+<div id="outline-container-org3c3e177" class="outline-2">
+<h2 id="org3c3e177">Shapes</h2>
+<div class="outline-text-2" id="text-org3c3e177">
+<p>
+A SHACL shapes graph consists of a set of <i>shapes</i> which are structural
+constraints on nodes. Shapes have a name which is a blank node or an
+IRI. When we evaluate a shape on a node, that node is called a
+<i>focus-node</i>. There are two types of shapes: node shapes and
+property shapes. A node shape directly defines constraints on the
+focus node, while property shapes defines constraints on the
+<i>value nodes</i> of the focus node. The value nodes are the nodes
+reachable through a property or path expression that is given as a
+parameter to the property shape (using the <code>sh:path</code> keyword in
+SHACL).
+</p>
+
+<p>
+Throughout this chapter, we will use examples from the access control
+setting. For this section, we will simply define some shapes about
+users in this setting. Basic users can access and create resources,
+while power users can also add users to the system and approve of them
+to also become power users. Consider the following data graph:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">admin_user</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Admin</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">adds</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_a</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">adds</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">approves</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #005a5f;">.</span>
+
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">adds</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">approves</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #005a5f;">.</span>
+
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #005a5f;">.</span>
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #005a5f;">.</span>
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">creates</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+<p>
+The idea of the first few lines is that the <code>:admin_user</code> adds users
+<code>:user_a</code> and <code>:user_b</code> to the system. They also approve of <code>:user_b</code>,
+meaning that <code>:user_b</code> is now also trusted within the system.
+</p>
+
+<p>
+Consider the following node shape that consists of one node test and
+two property shapes:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">basicUserShape</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">nodeKind</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">IRI</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #5317ac;">;</span>
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">minCount</span> 1
+  ] <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">creates</span> <span style="color: #5317ac;">;</span>
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">maxCount</span> 0
+  ] <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+<p>
+The shape name is <code>:basicUserShape</code>. It specifies three requirements for
+a given focus node. First, the focus node should be an IRI, as opposed
+to a blank node or a literal. The <code>sh:property</code> keyword indicates that
+the focus node must also adhere to a property shape. The first
+property shape is about the value nodes reachable with the <code>:accesses</code>
+property. Specifically, there must be at least one such value
+node. The second property shape is about the value nodes reachable
+with the <code>:creates</code> property. In this case, there may be at most 0. In
+natural language, this shape states: "The focus node is an IRI and
+<code>:accesses</code> at least one resource, but <code>:creates</code> none." So, in our
+example graph, only <code>:user_a</code> and <code>:user_b</code> satisfy <code>:basicUserShape</code>.
+</p>
+
+<p>
+SHACL has many different features for writing constraints. These
+features are called <i>constraint components</i>. The previous example
+made use of a <i>value type constraint component</i>, here indicated with
+the <i>sh:nodeKind</i> keyword, to check whether the focus node is an IRI,
+but also of <i>cardinality constraint components</i> to count the number
+of value nodes, indicated with the <code>sh:minCount</code> and <code>sh:maxCount</code>
+keywords. SHACL has many constraint components and, for my
+investigations, we restrict ourselves to the <a href="https://www.w3.org/Tr/shacl/#core-components">core constraint components</a>.
+Next follows some examples of some of the components
+that illustrate the capabilities of SHACL.
+</p>
+</div>
+
+<div id="outline-container-org65e375a" class="outline-3">
+<h3 id="org65e375a">Property Pair Constraint Components</h3>
+<div class="outline-text-3" id="text-org65e375a">
+<p>
+In property shapes, we can compare the value nodes to another set
+of nodes (reachable by some other property) in some predefined
+ways. The most important are <i>equality</i> and <i>disjointness</i> checks between
+the two sets.  Consider the following node shape:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">powerUserShape</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">not</span> [ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
+             <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">adds</span> <span style="color: #5317ac;">;</span>
+             <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">disjoint</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">approves</span> ] <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+<p>
+This shape asks of the focus node that the set of value nodes, i.e.,
+the nodes reachable with the <code>:adds</code> property, is <i>not</i> disjoint from the
+set of nodes reachable with the <code>:approves</code> property. In natural
+language: "The focus node approves at least one user they also
+added." So, in our graph <code>:admin_user</code> and <code>:user_b</code>
+satisfy <code>:powerUserShape</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge5c001b" class="outline-3">
+<h3 id="orge5c001b">Shape-based Constraint Components</h3>
+<div class="outline-text-3" id="text-orge5c001b">
+<p>
+We can refer to other shapes as well. Most notably, we can combine
+this with the counting from the cardinality constraint components to
+count only value nodes that conform to some other given shape. For
+example, consider the
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">authorizedUserShape</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">zeroOrMore</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">inverseProperty</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">approves</span> ] ] <span style="color: #5317ac;">;</span>
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedValueShape</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">isAdminShape</span> <span style="color: #5317ac;">;</span>
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedMinCount</span> 1 <span style="color: #5317ac;">;</span>
+  ] <span style="color: #005a5f;">.</span>
+
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">isAdminShape</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #005a5f;">rdf:</span><span style="color: #0000c0;">type</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">hasValue</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Admin</span> <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+<p>
+A first thing to note is that this shape makes use of a (complex) path
+expression. SHACL supports path expressions similar to those of
+SPARQL. This shape states that there must be at least one value node
+reachable, by following inverse <code>:approves</code> properties, that conforms to
+<code>:isAdminShape</code>. The keyword <code>sh:qualifiedValueShape</code> is used to refer to
+a shape, together with the <code>sh:qualifiedMinCount</code> to denote the desired
+cardinality. In our example graph, <code>:admin_user</code>, <code>:user_b</code>, and <code>:user_c</code>
+satisfy <code>:authorizedUserShape</code>. Note that it is different from writing:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">altAuthorizedUserShape</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">zeroOrMore</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">inverseProperty</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">approves</span> ] ] <span style="color: #5317ac;">;</span>
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">node</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">isAdminShape</span> <span style="color: #5317ac;">;</span>
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">minCount</span> 1 <span style="color: #5317ac;">;</span>
+  ] <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+<p>
+where <code>sh:node</code> is used to refer to another shape. This seems to express
+the same shape, however, all constraints used in a property shape
+apply to all value nodes, i.e., it is an implicit universal
+quantifier. When a cardinality constraint is then used, it is separate
+from the other constraints, and only refers the number of value
+nodes. In words, the <code>:altAuthorizedUserShape</code> states that all value
+nodes conform to <code>:isAdminShape</code> and there is at least one node in the
+set of value nodes. In our example graph, only <code>:admin_user</code> satisfies
+<code>:altAuthorizedUserShape</code>.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orga4c5f05" class="outline-3">
+<h3 id="orga4c5f05">Closed Constraint Component</h3>
+<div class="outline-text-3" id="text-orga4c5f05">
+<p>
+Finally, another interesting feature is <i>closedness</i>. It states that
+only a select few properties are allowed for a focus node. These
+select few properties can be given explicitly by the
+<code>sh:ignoredProperties</code> keyword, or are implied by the structure of the
+shape: the set of non-blank nodes obtained by following the
+<code>sh:property</code> keyword, followed by the <code>sh:path</code> keyword. Consider
+<code>:basicUserShape</code> defined above. We can expand the shape by adding the
+following triples:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">basicUserShape</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">closed</span> true <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">ignoredProperties</span> ( <span style="color: #005a5f;">rdf:</span><span style="color: #0000c0;">type</span> ) <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+<p>
+The shape is <i>closed</i>, meaning the only allowed properties are give by
+<code>sh:ignoredProperties</code>, i.e., <code>rdf:type</code>, but we also allow the properties
+related to the property shapes: <code>:accesses</code> and <code>:creates</code>. In natural
+language: "The focus node has no other properties than <code>rdf:type</code>,
+<code>:accesses</code>, or <code>:creates</code>; and must have an <code>:accesses</code> property and no
+<code>:creates</code> property." So in our example graph, only <code>:user_a</code> now
+satisfies <code>:basicUserShape</code>.
+</p>
+
+<p>
+Clearly, there are many intricacies in the semantics of SHACL that
+make it unsuited to study directly. Thereto, <a href="phd.html">Chapter 1 of my thesis</a>
+is dedicated to formalizing SHACL in such a way that makes
+it fit for the different investigations. There are many other
+constraint components than those demonstrated here. However, the
+ones discussed here are illustrative of the core SHACL
+features. Detailing the exact semantics of all core SHACL features
+is also discussed there.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd37e897" class="outline-2">
+<h2 id="orgd37e897">Targeting</h2>
+<div class="outline-text-2" id="text-orgd37e897">
+<p>
+A set of shape definitions on its own does not allow us to validate a
+graph in SHACL. Every shape can have a <i>target declaration</i> associated
+with it. A target declaration is a query that determines all the focus
+nodes for a given shape. There are five types of target declarations
+allowed in SHACL. Most of them are parameterized with an IRI or blank
+node <i>t</i>:
+</p>
+
+<ul class="org-ul">
+<li><b>Node targets.</b> There is one focus node, which is the parameter <i>t</i> (regardless whether <i>t</i> occurs in the graph.)</li>
+<li><b>Class-based targets.</b> Targets all nodes that are of RDF class <i>t</i>.</li>
+<li><b>Implicit class targets.</b> Targets all nodes whose RDF class is the shape name.</li>
+<li><b>Subjects-of targets.</b> Targets all nodes that are the subject of a triple where the predicate is <i>t</i>.</li>
+<li><b>Objects-of targets.</b> Targets all nodes that are the objects of a triple where the predicate is <i>t</i>.</li>
+</ul>
+
+<p>
+We can add target declarations to the shapes from the previous section
+to make a complete shapes graph. Adding the Subjects-of target triple
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">authorizedUserShape</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">targetSubjectsOf</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">approves</span>
+</pre>
+</div>
+<p>
+to the shapes graph gives us a complete constraint on the graph. In
+this case, our example data graph conforms because all nodes that
+approve another node are indeed authorized users. However, if we add
+the triple <code>:user_a :approves :user_d</code> to the data graph, it would no
+longer conform, as <code>:user_a</code> does not satisfy <code>:authorizedUserShape</code>.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="copyright-container">
+<div class="copyright">
+Copyright &copy; 2020-2023 Maxime Jakubowski some rights reserved<br/>
+Content is available under
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+CC-BY-SA 4.0</a> unless otherwise noted
+</div>
+<div class="cc-badge">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License"
+     src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+</a>
+</div>
+</div>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2024-05-29 Wed 11:18.
+</div>
+</footer>
+</div>
+</body>
+</html>

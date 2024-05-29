@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2024-05-29 Wed 11:19 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Provenance and SHACL</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="Maxime Jakubowski">
+<link rel="stylesheet" href="/css/style.css"
+type="text/css"/><meta name="google-site-verification"
+content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="preamble" class="status">
+
+<nav id="post-home">
+<ul><li><a href="/">Home</a></li></ul>
+</nav>
+</div>
+<div id="content">
+<header>
+<h1 class="title">Provenance and SHACL</h1>
+</header><div id="phdbox">
+<p>
+Note: This post is an adaptation of <a href="phd.html">Section 1.4 of my PhD thesis</a>, and
+serves as a general intro to <a href="https://openproceedings.org/2023/conf/edbt/paper-3.pdf">our paper on the subject</a>. The purpose of
+publishing it as a standalone blogpost is to further disseminate my
+writings. It is part of a short series of posts representing the
+Introduction of my thesis:
+</p>
+<ul class="org-ul">
+<li><a href="shaclnutshell.html">Section 1.1: SHACL in a nutshell</a></li>
+<li><a href="shaclexpressiveness.html">Section 1.2: Expressiveness</a></li>
+<li><a href="recursiveshacl.html">Section 1.3: Recursion</a></li>
+<li>Section 1.4: Provenance (this post)</li>
+</ul>
+</div>
+
+<p>
+In the previous posts, we have primarily discussed the fundamental
+semantics for SHACL. Here, we will explore another useful semantics:
+data provenance for SHACL. Some elements have already been discussed
+in <a href="shapefragments.html">a previous post</a>.
+</p>
+
+<p>
+Given a SHACL shapes graph and a data graph that conforms to that
+shapes graph, we want to know what subset of the data graph is
+<i>relevant</i> to decide that it conforms. This subset of the data is
+called the <i>data provenance</i>.
+</p>
+
+<p>
+There are many intuitions of what data is relevant. The provenance
+could be seen as the subset of the graph "traced out" by the shape by
+following the values of <code>sh:path</code> in the property shapes. Another
+intuition is that we would like to have a subset of the graph that the
+validator "looked at" while validating the data. These notions are
+useful but imprecise, as will be demonstrated later in this
+section. Our approach is to at least take into consideration the
+so-called <i>sufficiency</i> property of the provenance. The sufficiency
+property states, informally, that the resulting provenance still
+conforms to the shapes graph. Or, at the level of shapes (without
+targets), all nodes from the input data graph still satisfies the same
+shapes in the provenance. Sufficiency tells us that our provenance is
+actually relevant in a very precise way &#x2014; clearly, data that
+contributes to conformance must be relevant.
+</p>
+
+<p>
+Our discussion will focus on the provenance of a shape without target
+declarations. So, given a data graph <i>G</i>, a shape <i>s</i>, and a node <i>n</i> from
+\(G\) that conforms to \(s\), we will define the provenance which we call
+the <i>neighborhood</i> of <i>n</i> in <i>G</i> according to <i>s</i>. This can then later be
+generalized for shapes graphs (including target declarations) as
+opposed to just shapes.
+</p>
+
+<div id="outline-container-org9db9202" class="outline-2">
+<h2 id="org9db9202">Neighborhoods by example</h2>
+<div class="outline-text-2" id="text-org9db9202">
+<p>
+We will use the following data graph for our examples:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_a</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Admin</span><span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #005a5f;">.</span>
+
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Admin</span><span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #005a5f;">.</span>
+
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">User</span><span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #005a5f;">.</span>
+
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Resource</span> <span style="color: #005a5f;">.</span>
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Resource</span> <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+<p>
+Suppose we have a shape defining a standard resource as one that is
+accessed by at least one user (or admin):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">standardResource</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">class</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Resource</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">inversePath</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> ] <span style="color: #5317ac;">;</span>
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">minCount</span> 1 <span style="color: #5317ac;">;</span>
+  ] <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+<p>
+Clearly, both <code>:resource1</code> and <code>:resource2</code> satisfy the shape.  We will
+look at the neighborhood of <code>:resource1</code>.  Looking at the intuition
+behind neighborhoods, the triple stating that <code>:resource1</code> is a
+<code>:Resource</code> is definitely in the neighborhood, as well as <i>at least one</i>
+of the triples stating that it is accessed by a user. However, there
+is no order on the triples defined in RDF, so picking any of the three
+triples is somewhat arbitrary. We could define provenance to be
+non-deterministic, and say that there are three
+neighborhoods. However, our approach is to have a <i>deterministic</i>
+provenance definition and thus, we choose to define the neighborhood
+as:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Resource</span> <span style="color: #005a5f;">.</span>
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #005a5f;">.</span>
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #005a5f;">.</span>
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+
+<p>
+Note that this does not follow the intuition that we want to have the
+subgraph that the validator looks at. Any reasonable validator would
+only need to consider one <code>:accesses</code> triple to know that <code>:resource1</code>
+conforms to <code>:standardResource</code>.
+</p>
+
+<p>
+We will continue with another example. Consider the shape defining
+unpopular resources as resources that are accessed by at most two
+users:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">unpopularResource</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">class</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">inversePath</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> ] <span style="color: #5317ac;">;</span>
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">maxCount</span> 2 <span style="color: #5317ac;">;</span>
+  ] <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+<p>
+Only <code>:resource2</code> satisfies this shape. There are multiple options again
+for what the neighborhood could be. There are two deterministic
+options. Either the neighborhood contains all <code>:accesses</code> triples or
+none! According to our intuition of wanting to "trace out" the shape
+the former is the suiting definition. However, our definition will
+choose to not include any <code>:accesses</code> triples in this case. Our design
+philosophy here is that neighborhoods should be somehow
+<i>minimal</i>. Choosing not to include any <code>:accesses</code> triples is minimal, and
+still makes <code>:resource2</code> conform to the shape. Although this may be
+counterintuitive, this design choice makes sense in light of
+sufficiency. We will demonstrate a similar situation with a slightly
+more complex shape containing the same ideas:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">specialResource</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">class</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource</span> <span style="color: #5317ac;">;</span>
+  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">inversePath</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> ]
+
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">minCount</span> 1 <span style="color: #5317ac;">;</span>
+
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedValueShape</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">not</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">class</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">admin</span> ]] <span style="color: #5317ac;">;</span>
+    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedMaxCount</span> 1 <span style="color: #5317ac;">;</span>
+  ]
+</pre>
+</div>
+
+<p>
+This shape consists out of three constraints. First, the node must be
+a resource. Second, the resource must be accessed by at least one
+user. Finally, at most one user that accesses this resource may not be
+an admin.
+</p>
+
+<p>
+The resources described by this shape are special in the sense that
+they may only be accessed by admins, with at most one exception.
+</p>
+
+<p>
+It is clear from the previous discussion that the neighborhood at
+least includes the following:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource</span> <span style="color: #005a5f;">.</span>
+
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #005a5f;">.</span>
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+<p>
+This is due to the first two constraints. However, what do we do with
+the qualified max count? To include what is mentioned in the shape
+would result in adding the following triple to the neighborhood:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">user</span> <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+<p>
+Indicating that <code>:user_c</code> is <i>not</i> an <code>:admin</code>. However, this is exactly the
+opposite of the information we need for conformance. What we <i>do</i>
+need is the triple stating that <code>:user_b</code> is indeed an
+<code>:admin</code>. The idea here is that we want to include in our
+provenance all data proving that a certain node conforms to a
+shape. Furthermore, in a shape where only the third constraint is
+specified, returning nothing also seems to be a possibility for the
+definition of neighborhood. However, we designed our neighborhood to
+contain all necessary information to decide conformance, even when
+other parts of the graph are added. Indeed, adding the triples
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #005a5f;">.</span>
+<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #5317ac;">.</span>
+</pre>
+</div>
+
+<p>
+would break this property. Having this property is technically
+necessary but also useful &#x2014; it allows for neighborhood engines to be
+flexible and add more to the provenance, while never breaking
+sufficiency.
+</p>
+
+<p>
+This example illustrates the intricacies of defining provenance that
+is sufficient. Here, we discussed the (qualified) cardinality
+constraint components, but defining neighborhoods for all shapes
+requires thinking about every feature in SHACL and choosing a suitable
+definition for each of them while keeping in mind sufficiency and our
+two design principles: determinism and minimality.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf25f021" class="outline-2">
+<h2 id="orgf25f021">Shape Fragments</h2>
+<div class="outline-text-2" id="text-orgf25f021">
+<p>
+This definition of neighborhoods can be viewed as an additional
+semantics for SHACL defining a retrieval mechanism. We call these
+retrieval semantics <i>shape fragments</i>.
+</p>
+
+<p>
+Given a shape and a data graph, the shape fragment is simply the
+neighborhood of all nodes conforming to that shape. When there are
+targeting declarations, we only consider the nodes that are targeted
+(and include the information that targets them). It can similarly be
+defined for sets of shapes, or for shapes graphs.
+</p>
+
+<p>
+One can imagine the usefulness of such a retrieval mechanism. When
+dealing with large RDF graphs, a shapes graph may only describe part
+of it that is relevant to the intended usage. Retrieving the shape
+fragment of the data graph then gives us a (possibly) smaller RDF
+graph which is easier to process, and still satisfies the constraints
+while containing relevant data.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="copyright-container">
+<div class="copyright">
+Copyright &copy; 2020-2023 Maxime Jakubowski some rights reserved<br/>
+Content is available under
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+CC-BY-SA 4.0</a> unless otherwise noted
+</div>
+<div class="cc-badge">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License"
+     src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+</a>
+</div>
+</div>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2024-05-29 Wed 11:18.
+</div>
+</footer>
+</div>
+</body>
+</html>
