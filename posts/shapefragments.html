@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-06-14 Wed 10:51 -->
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- 2024-05-29 Wed 11:19 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shape Fragments and Subgraphs</title>
-<meta name="author" content="Maxime Jakubowski" />
-<meta name="generator" content="Org Mode" />
+<meta name="generator" content="Org mode">
+<meta name="author" content="Maxime Jakubowski">
 <link rel="stylesheet" href="/css/style.css"
 type="text/css"/><meta name="google-site-verification"
 content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
@@ -18,12 +18,12 @@ content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
 <ul><li><a href="/">Home</a></li></ul>
 </nav>
 </div>
-<div id="content" class="content">
+<div id="content">
 <header>
 <h1 class="title">Shape Fragments and Subgraphs</h1>
 </header><p>
-In this post I'd like to explain some of the ideas from our recent
-researchpaper, starting small to illustrate the design choices and
+In this post I'd like to explain some of the ideas from our paper,
+starting small to illustrate the design choices and
 considerations. The paper is titled <a href="https://openproceedings.org/2023/conf/edbt/paper-3.pdf">Data Provenance for SHACL</a>
 (formerly <a href="https://arxiv.org/abs/2112.11796">Shape Fragments</a>) and in its essence, it describes how the
 <a href="introshacl.html">constraint language SHACL</a> can be used to specify subsets of an RDF
@@ -38,7 +38,7 @@ this leaves out what it means to "trace out" shapes from a
 graph. Consider the following example shape:
 </p>
 
-<pre class="example" id="org05d3602">
+<pre class="example" id="org9c4d472">
 :SocialShape a sh:PropertyShape ;
     sh:targetClass foaf:Person ;
     sh:path foaf:knows ;
@@ -52,7 +52,7 @@ you take all triples where the subject is the focus node and which
 also have <code>foaf:knows</code> as a predicate. Consider the following data
 graph:
 </p>
-<pre class="example" id="org2985ab8">
+<pre class="example" id="org558f05d">
 :maxime a foaf:Person ;
     foaf:givenName "Maxime" ;
     foaf:knows :thomas ;
@@ -62,7 +62,7 @@ graph:
 <p>
 Using the ideas formulated earlier, we obtain the subgraph:
 </p>
-<pre class="example" id="orgda1933e">
+<pre class="example" id="orgf1c1a2f">
 :maxime foaf:knows :thomas ;
     foaf:knows :anastasia ;
     foaf:knows :jan .
@@ -94,7 +94,7 @@ the triples.
 <p>
 Let's consider another example:
 </p>
-<pre class="example" id="orgc7920f2">
+<pre class="example" id="orga048626">
 :AntisocialShape a sh:PropertyShape ;
     sh:targetClass foaf:Person ;
     sh:path foaf:knows ;
@@ -104,7 +104,7 @@ Let's consider another example:
 Here, you are antisocial when you know at most two others. Consider a
 new data graph:
 </p>
-<pre class="example" id="orgd9400bf">
+<pre class="example" id="org2301765">
 :bob a foaf:Person ;
     foaf:givenName "Bob" ;
     foaf:knows :alice ;
@@ -174,7 +174,7 @@ may be of interest.
 <footer>
 <div class="copyright-container">
 <div class="copyright">
-Copyright &copy; 2020-2022 Maxime Jakubowski some rights reserved<br/>
+Copyright &copy; 2020-2023 Maxime Jakubowski some rights reserved<br/>
 Content is available under
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
 CC-BY-SA 4.0</a> unless otherwise noted
@@ -187,7 +187,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.1 (<a href="https://orgmode.org">Org</a> mode 9.5.2). Last updated: 2023-03-07 Tue 11:44.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2024-05-29 Wed 10:43.
 </div>
 </footer>
 </div>
