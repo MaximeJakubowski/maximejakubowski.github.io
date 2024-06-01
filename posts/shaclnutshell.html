@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2024-05-29 Wed 11:24 -->
+<!-- 2024-06-01 Sat 14:33 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SHACL in a nutshell</title>
@@ -50,9 +50,9 @@ not only check for conformance, but to also generate a <i>validation
 report</i> specifying which nodes violate which parts of the shapes graph.
 </p>
 
-<div id="outline-container-org3c3e177" class="outline-2">
-<h2 id="org3c3e177">Shapes</h2>
-<div class="outline-text-2" id="text-org3c3e177">
+<div id="outline-container-org5429fc4" class="outline-2">
+<h2 id="org5429fc4">Shapes</h2>
+<div class="outline-text-2" id="text-org5429fc4">
 <p>
 A SHACL shapes graph consists of a set of <i>shapes</i> which are structural
 constraints on nodes. Shapes have a name which is a blank node or an
@@ -141,9 +141,9 @@ that illustrate the capabilities of SHACL.
 </p>
 </div>
 
-<div id="outline-container-org65e375a" class="outline-3">
-<h3 id="org65e375a">Property Pair Constraint Components</h3>
-<div class="outline-text-3" id="text-org65e375a">
+<div id="outline-container-org459d0c3" class="outline-3">
+<h3 id="org459d0c3">Property Pair Constraint Components</h3>
+<div class="outline-text-3" id="text-org459d0c3">
 <p>
 In property shapes, we can compare the value nodes to another set
 of nodes (reachable by some other property) in some predefined
@@ -169,9 +169,9 @@ satisfy <code>:powerUserShape</code>.
 </div>
 </div>
 
-<div id="outline-container-orge5c001b" class="outline-3">
-<h3 id="orge5c001b">Shape-based Constraint Components</h3>
-<div class="outline-text-3" id="text-orge5c001b">
+<div id="outline-container-orgf090e22" class="outline-3">
+<h3 id="orgf090e22">Shape-based Constraint Components</h3>
+<div class="outline-text-3" id="text-orgf090e22">
 <p>
 We can refer to other shapes as well. Most notably, we can combine
 this with the counting from the cardinality constraint components to
@@ -224,9 +224,9 @@ set of value nodes. In our example graph, only <code>:admin_user</code> satisfie
 </div>
 
 
-<div id="outline-container-orga4c5f05" class="outline-3">
-<h3 id="orga4c5f05">Closed Constraint Component</h3>
-<div class="outline-text-3" id="text-orga4c5f05">
+<div id="outline-container-orgaccd861" class="outline-3">
+<h3 id="orgaccd861">Closed Constraint Component</h3>
+<div class="outline-text-3" id="text-orgaccd861">
 <p>
 Finally, another interesting feature is <i>closedness</i>. It states that
 only a select few properties are allowed for a focus node. These
@@ -267,9 +267,9 @@ is also discussed there.
 </div>
 </div>
 
-<div id="outline-container-orgd37e897" class="outline-2">
-<h2 id="orgd37e897">Targeting</h2>
-<div class="outline-text-2" id="text-orgd37e897">
+<div id="outline-container-org69076f8" class="outline-2">
+<h2 id="org69076f8">Targeting</h2>
+<div class="outline-text-2" id="text-org69076f8">
 <p>
 A set of shape definitions on its own does not allow us to validate a
 graph in SHACL. Every shape can have a <i>target declaration</i> associated
