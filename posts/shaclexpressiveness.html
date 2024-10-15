@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2024-06-01 Sat 14:33 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 2024-10-15 Tue 11:41 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Expressiveness of SHACL Features</title>
-<meta name="generator" content="Org mode">
-<meta name="author" content="Maxime Jakubowski">
+<meta name="author" content="Maxime Jakubowski" />
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" href="/css/style.css"
 type="text/css"/><meta name="google-site-verification"
 content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
@@ -18,7 +18,7 @@ content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
 <ul><li><a href="/">Home</a></li></ul>
 </nav>
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Expressiveness of SHACL Features</h1>
 </header><div id="phdbox">
@@ -52,8 +52,8 @@ express it using other constraint components. For example, given an
 IRI <code>:c</code> every shape of the form:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">class</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">c</span>
+<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">class</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">c</span>
 ]
 </pre>
 </div>
@@ -62,9 +62,9 @@ IRI <code>:c</code> every shape of the form:
 can be written as the shape:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> ( [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">zeroOrMorePath</span> <span style="color: #005a5f;">rdfs:</span><span style="color: #0000c0;">subClassOf</span> ] <span style="color: #005a5f;">rdf:</span><span style="color: #0000c0;">type</span> ) <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">hasValue</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">c</span>
+<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> ( [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">zeroOrMorePath</span> <span style="color: #005f5f;">rdfs:</span><span style="color: #0000b0;">subClassOf</span> ] <span style="color: #005f5f;">rdf:</span><span style="color: #0000b0;">type</span> ) <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">hasValue</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">c</span>
 ]
 </pre>
 </div>
@@ -103,11 +103,11 @@ node, to the focus node. In other words, there may not be a self-loop
 expressed with the shape:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">noLoop</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">not</span> [ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-           <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #5317ac;">;</span>
-           <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">equals</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">zeroOrOnePath</span> <span style="color: #721045;">&lt;path&gt;</span> ]
-         ] <span style="color: #5317ac;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">noLoop</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">not</span> [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+           <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #531ab6;">;</span>
+           <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">equals</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">zeroOrOnePath</span> <span style="color: #721045;">&lt;path&gt;</span> ]
+         ] <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -146,7 +146,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2024-05-29 Wed 11:17.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15). Last updated: 2024-05-29 Wed 11:17.
 </div>
 </footer>
 </div>

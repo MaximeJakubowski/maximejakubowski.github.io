@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2024-06-01 Sat 14:33 -->
+<!-- 2024-06-07 Fri 10:35 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Recursion for SHACL</title>
@@ -40,9 +40,9 @@ different semantics are: Supported Model semantics, Stratified
 Recursion, Stable Model semantics, and Well-Founded semantics.
 </p>
 
-<div id="outline-container-orgb0016d1" class="outline-2">
-<h2 id="orgb0016d1">Setting the stage</h2>
-<div class="outline-text-2" id="text-orgb0016d1">
+<div id="outline-container-org5f444b2" class="outline-2">
+<h2 id="org5f444b2">Setting the stage</h2>
+<div class="outline-text-2" id="text-org5f444b2">
 <p>
 This post will use a running example to illustrate the different
 semantics. Consider an access control setting, where users can be
@@ -67,9 +67,9 @@ introduce our own local prefix, <code>@prefix :
 </div>
 </div>
 
-<div id="outline-container-orgfdc836e" class="outline-2">
-<h2 id="orgfdc836e">Positive recursion</h2>
-<div class="outline-text-2" id="text-orgfdc836e">
+<div id="outline-container-org4b1acf4" class="outline-2">
+<h2 id="org4b1acf4">Positive recursion</h2>
+<div class="outline-text-2" id="text-org4b1acf4">
 <p>
 A shape is said to be recursive if it references itself (directly,
 or indirectly). Consider the following access control shapes graph:
@@ -113,9 +113,9 @@ later in this post.
 </div>
 </div>
 
-<div id="outline-container-orgf3f0fb3" class="outline-2">
-<h2 id="orgf3f0fb3">Semantics for positive recursion</h2>
-<div class="outline-text-2" id="text-orgf3f0fb3">
+<div id="outline-container-org83d6c76" class="outline-2">
+<h2 id="org83d6c76">Semantics for positive recursion</h2>
+<div class="outline-text-2" id="text-org83d6c76">
 <p>
 Consider the following data graph:
 </p>
@@ -189,9 +189,9 @@ graph validates.
 </div>
 </div>
 
-<div id="outline-container-org54e1fa1" class="outline-2">
-<h2 id="org54e1fa1">Adding negation</h2>
-<div class="outline-text-2" id="text-org54e1fa1">
+<div id="outline-container-org8ede8f1" class="outline-2">
+<h2 id="org8ede8f1">Adding negation</h2>
+<div class="outline-text-2" id="text-org8ede8f1">
 <p>
 We will add some negation. Consider the following addition to the
 shapes graph:
@@ -269,9 +269,9 @@ suitable semantics for recursive SHACL.
 </div>
 </div>
 
-<div id="outline-container-org1c4acca" class="outline-2">
-<h2 id="org1c4acca">We can not always stratify easily</h2>
-<div class="outline-text-2" id="text-org1c4acca">
+<div id="outline-container-org97affd2" class="outline-2">
+<h2 id="org97affd2">We can not always stratify easily</h2>
+<div class="outline-text-2" id="text-org97affd2">
 <p>
 Indeed, we cannot always stratify easily as discussed
 above. Consider a new shapes graph:
@@ -361,9 +361,9 @@ example, it will say the assignment of <code>:Authorized</code> for <code>:user_
 </div>
 </div>
 
-<div id="outline-container-orgf877a72" class="outline-2">
-<h2 id="orgf877a72">Concluding thoughts</h2>
-<div class="outline-text-2" id="text-orgf877a72">
+<div id="outline-container-org7ff82f7" class="outline-2">
+<h2 id="org7ff82f7">Concluding thoughts</h2>
+<div class="outline-text-2" id="text-org7ff82f7">
 <p>
 The ideas can be summarized as follows. First, Stratified Recursion
 is the only approach that somehow restricts the kinds of recursion

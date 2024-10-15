@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2024-06-01 Sat 14:33 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 2024-10-15 Tue 11:41 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Extending SHACL</title>
-<meta name="generator" content="Org mode">
-<meta name="author" content="Maxime Jakubowski">
+<meta name="author" content="Maxime Jakubowski" />
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" href="/css/style.css"
 type="text/css"/><meta name="google-site-verification"
 content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
@@ -18,7 +18,7 @@ content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
 <ul><li><a href="/">Home</a></li></ul>
 </nav>
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Extending SHACL</h1>
 </header><p>
@@ -44,9 +44,9 @@ subclass of <code>&lt;root&gt;</code> . This can be done in current SHACL using 
 property shape:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">zeroOrMorePath</span> <span style="color: #005a5f;">rdfs:</span><span style="color: #0000c0;">subClassOf</span> ] <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">hasValue</span> <span style="color: #721045;">&lt;root&gt;</span>  
+<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">zeroOrMorePath</span> <span style="color: #005f5f;">rdfs:</span><span style="color: #0000b0;">subClassOf</span> ] <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">hasValue</span> <span style="color: #721045;">&lt;root&gt;</span>  
 ]
 </pre>
 </div></li>
@@ -61,22 +61,22 @@ when there is no node reachable by <code>&lt;path&gt;</code>, there may also be 
 reachable by <code>&lt;prop&gt;</code>. This can be done in SHACL using the node shape:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">and</span> (
-    [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">or</span> (
-        [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #5317ac;">;</span>
-          <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">maxCount</span> 0
+<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">and</span> (
+    [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">or</span> (
+        [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #531ab6;">;</span>
+          <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">maxCount</span> 0
         ]
-        [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;prop&gt;</span> <span style="color: #5317ac;">;</span>
-          <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">minCount</span> 1
+        [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;prop&gt;</span> <span style="color: #531ab6;">;</span>
+          <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">minCount</span> 1
         ] )
     ]
-    [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">or</span> (
-        [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #5317ac;">;</span>
-          <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">minCount</span> 1
+    [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">or</span> (
+        [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #531ab6;">;</span>
+          <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">minCount</span> 1
         ]
-        [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;prop&gt;</span> <span style="color: #5317ac;">;</span>
-          <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">maxCount</span> 0
+        [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;prop&gt;</span> <span style="color: #531ab6;">;</span>
+          <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">maxCount</span> 0
         ] )
     ]
   )
@@ -89,9 +89,9 @@ reachable by <code>&lt;prop&gt;</code>. This can be done in SHACL using the node
 also be reachable with <code>&lt;prop&gt;</code>. This can be done in SHACL:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">alternativePath</span> (<span style="color: #721045;">&lt;path&gt;</span> <span style="color: #721045;">&lt;prop&gt;</span>) ] <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">equals</span> <span style="color: #721045;">&lt;prop&gt;</span>
+<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">alternativePath</span> (<span style="color: #721045;">&lt;path&gt;</span> <span style="color: #721045;">&lt;prop&gt;</span>) ] <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">equals</span> <span style="color: #721045;">&lt;prop&gt;</span>
 ]
 </pre>
 </div></li>
@@ -102,10 +102,10 @@ shape with <code>sh:path &lt;path&gt;</code>, it means that there may not be a p
 expressible in SHACL <i>with <code>sh:equals</code> that support full paths</i>:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">not</span> [ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-           <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #5317ac;">;</span>
-           <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">equals</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">zeroOrOnePath</span> <span style="color: #721045;">&lt;path&gt;</span> ]
+<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">not</span> [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+           <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #531ab6;">;</span>
+           <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">equals</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">zeroOrOnePath</span> <span style="color: #721045;">&lt;path&gt;</span> ]
          ]
 ]
 </pre>
@@ -117,9 +117,9 @@ must also be reachable with the inverse of that <code>&lt;path&gt;</code>. This 
 done in SHACL <i>with <code>sh:equals</code> that support full paths</i>:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">equals</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">alternativePath</span> (<span style="color: #721045;">&lt;path&gt;</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">inversePath</span> <span style="color: #721045;">&lt;path&gt;</span> ] ) ]
+<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">equals</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">alternativePath</span> (<span style="color: #721045;">&lt;path&gt;</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inversePath</span> <span style="color: #721045;">&lt;path&gt;</span> ] ) ]
 ]
 </pre>
 </div></li>
@@ -131,12 +131,12 @@ are also the type or a superclass of the type of the focus node. We
 can then write this in SHACL as:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">closed</span> true <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;p1&gt;</span> ] <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;p2&gt;</span> ] <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;p3&gt;</span> ] <span style="color: #5317ac;">;</span>
-  <span style="color: #5317ac;">...</span>
+<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">closed</span> true <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">property</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;p1&gt;</span> ] <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">property</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;p2&gt;</span> ] <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">property</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;p3&gt;</span> ] <span style="color: #531ab6;">;</span>
+  <span style="color: #531ab6;">...</span>
 ]
 </pre>
 </div></li>
@@ -148,18 +148,18 @@ reachable with <code>&lt;path&gt;</code> such that this node is one of <code>(&l
   ...)</code>. This can be expressed in SHACL:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">or</span> (
-    [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #5317ac;">;</span>
-      <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedValueShape</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">in</span> (<span style="color: #721045;">&lt;c1&gt;</span>) ] <span style="color: #5317ac;">;</span>
-      <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedMinCount</span> 1 ] <span style="color: #5317ac;">;</span>
-    [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #5317ac;">;</span>
-      <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedValueShape</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">in</span> (<span style="color: #721045;">&lt;c2&gt;</span>) ] <span style="color: #5317ac;">;</span>
-      <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedMinCount</span> 1 ] <span style="color: #5317ac;">;</span>
-    [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #5317ac;">;</span>
-      <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedValueShape</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">in</span> (<span style="color: #721045;">&lt;c3&gt;</span>) ] <span style="color: #5317ac;">;</span>
-      <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedMinCount</span> 1 ] <span style="color: #5317ac;">;</span>
-    <span style="color: #5317ac;">...</span>
+<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">or</span> (
+    [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #531ab6;">;</span>
+      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">in</span> (<span style="color: #721045;">&lt;c1&gt;</span>) ] <span style="color: #531ab6;">;</span>
+      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1 ] <span style="color: #531ab6;">;</span>
+    [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #531ab6;">;</span>
+      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">in</span> (<span style="color: #721045;">&lt;c2&gt;</span>) ] <span style="color: #531ab6;">;</span>
+      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1 ] <span style="color: #531ab6;">;</span>
+    [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #531ab6;">;</span>
+      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">in</span> (<span style="color: #721045;">&lt;c3&gt;</span>) ] <span style="color: #531ab6;">;</span>
+      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1 ] <span style="color: #531ab6;">;</span>
+    <span style="color: #531ab6;">...</span>
   )
 ]
 </pre>
@@ -171,10 +171,10 @@ reachable with <code>&lt;path&gt;</code> such that this node is one of <code>(&l
 expressed in SHACL:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> ( <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #005a5f;">rdf:</span><span style="color: #0000c0;">type</span> ) <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedValueShape</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">in</span> (<span style="color: #721045;">&lt;c&gt;</span>) ] <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedMinCount</span> 1
+<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> ( <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #005f5f;">rdf:</span><span style="color: #0000b0;">type</span> ) <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">in</span> (<span style="color: #721045;">&lt;c&gt;</span>) ] <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1
 ] 
 </pre>
 </div></li>
@@ -186,13 +186,13 @@ other words, every value node of the focus node must have exactly
 one inverse <code>&lt;path&gt;</code> to a node with <code>rdf:type &lt;c&gt;</code>.
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">node</span> [ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-            <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> ( [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">inversePath</span> <span style="color: #721045;">&lt;path&gt;</span> ] <span style="color: #005a5f;">rdf:</span><span style="color: #0000c0;">type</span> ) <span style="color: #5317ac;">;</span>
-            <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedValueShape</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">in</span> (<span style="color: #721045;">&lt;c&gt;</span>) ] <span style="color: #5317ac;">;</span>
-            <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedMinCount</span> 1 <span style="color: #5317ac;">;</span>
-            <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedMaxCount</span> 1 ]
+<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">node</span> [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+            <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> ( [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inversePath</span> <span style="color: #721045;">&lt;path&gt;</span> ] <span style="color: #005f5f;">rdf:</span><span style="color: #0000b0;">type</span> ) <span style="color: #531ab6;">;</span>
+            <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">in</span> (<span style="color: #721045;">&lt;c&gt;</span>) ] <span style="color: #531ab6;">;</span>
+            <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1 <span style="color: #531ab6;">;</span>
+            <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMaxCount</span> 1 ]
 ]
 </pre>
 </div></li>
@@ -265,7 +265,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2023-04-03 Mon 09:50.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15). Last updated: 2023-04-03 Mon 09:50.
 </div>
 </footer>
 </div>

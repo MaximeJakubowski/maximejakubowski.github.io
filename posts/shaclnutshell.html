@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2024-06-01 Sat 14:33 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 2024-10-15 Tue 11:41 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SHACL in a nutshell</title>
-<meta name="generator" content="Org mode">
-<meta name="author" content="Maxime Jakubowski">
+<meta name="author" content="Maxime Jakubowski" />
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" href="/css/style.css"
 type="text/css"/><meta name="google-site-verification"
 content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
@@ -18,7 +18,7 @@ content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
 <ul><li><a href="/">Home</a></li></ul>
 </nav>
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">SHACL in a nutshell</h1>
 </header><div id="phdbox">
@@ -50,9 +50,9 @@ not only check for conformance, but to also generate a <i>validation
 report</i> specifying which nodes violate which parts of the shapes graph.
 </p>
 
-<div id="outline-container-org5429fc4" class="outline-2">
-<h2 id="org5429fc4">Shapes</h2>
-<div class="outline-text-2" id="text-org5429fc4">
+<div id="outline-container-org15aa124" class="outline-2">
+<h2 id="org15aa124">Shapes</h2>
+<div class="outline-text-2" id="text-org15aa124">
 <p>
 A SHACL shapes graph consists of a set of <i>shapes</i> which are structural
 constraints on nodes. Shapes have a name which is a blank node or an
@@ -74,18 +74,18 @@ while power users can also add users to the system and approve of them
 to also become power users. Consider the following data graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">admin_user</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Admin</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">adds</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_a</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">adds</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">approves</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #005a5f;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin_user</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Admin</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">adds</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">adds</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">.</span>
 
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">adds</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">approves</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #005a5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">adds</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">.</span>
 
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #005a5f;">.</span>
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #005a5f;">.</span>
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">creates</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #5317ac;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">creates</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource2</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -100,16 +100,16 @@ Consider the following node shape that consists of one node test and
 two property shapes:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">basicUserShape</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">nodeKind</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">IRI</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #5317ac;">;</span>
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">minCount</span> 1
-  ] <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">creates</span> <span style="color: #5317ac;">;</span>
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">maxCount</span> 0
-  ] <span style="color: #5317ac;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">basicUserShape</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">nodeKind</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">IRI</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">property</span> [
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">minCount</span> 1
+  ] <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">property</span> [
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">creates</span> <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">maxCount</span> 0
+  ] <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -141,9 +141,9 @@ that illustrate the capabilities of SHACL.
 </p>
 </div>
 
-<div id="outline-container-org459d0c3" class="outline-3">
-<h3 id="org459d0c3">Property Pair Constraint Components</h3>
-<div class="outline-text-3" id="text-org459d0c3">
+<div id="outline-container-orgd5427e9" class="outline-3">
+<h3 id="orgd5427e9">Property Pair Constraint Components</h3>
+<div class="outline-text-3" id="text-orgd5427e9">
 <p>
 In property shapes, we can compare the value nodes to another set
 of nodes (reachable by some other property) in some predefined
@@ -151,10 +151,10 @@ ways. The most important are <i>equality</i> and <i>disjointness</i> checks betw
 the two sets.  Consider the following node shape:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">powerUserShape</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">not</span> [ <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-             <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">adds</span> <span style="color: #5317ac;">;</span>
-             <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">disjoint</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">approves</span> ] <span style="color: #5317ac;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">powerUserShape</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">not</span> [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+             <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">adds</span> <span style="color: #531ab6;">;</span>
+             <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">disjoint</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> ] <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -169,9 +169,9 @@ satisfy <code>:powerUserShape</code>.
 </div>
 </div>
 
-<div id="outline-container-orgf090e22" class="outline-3">
-<h3 id="orgf090e22">Shape-based Constraint Components</h3>
-<div class="outline-text-3" id="text-orgf090e22">
+<div id="outline-container-org69b4666" class="outline-3">
+<h3 id="org69b4666">Shape-based Constraint Components</h3>
+<div class="outline-text-3" id="text-org69b4666">
 <p>
 We can refer to other shapes as well. Most notably, we can combine
 this with the counting from the cardinality constraint components to
@@ -179,15 +179,15 @@ count only value nodes that conform to some other given shape. For
 example, consider the
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">authorizedUserShape</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">zeroOrMore</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">inverseProperty</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">approves</span> ] ] <span style="color: #5317ac;">;</span>
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedValueShape</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">isAdminShape</span> <span style="color: #5317ac;">;</span>
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedMinCount</span> 1 <span style="color: #5317ac;">;</span>
-  ] <span style="color: #005a5f;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">authorizedUserShape</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">zeroOrMore</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inverseProperty</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> ] ] <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">isAdminShape</span> <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1 <span style="color: #531ab6;">;</span>
+  ] <span style="color: #005f5f;">.</span>
 
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">isAdminShape</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> <span style="color: #005a5f;">rdf:</span><span style="color: #0000c0;">type</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">hasValue</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Admin</span> <span style="color: #5317ac;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">isAdminShape</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #005f5f;">rdf:</span><span style="color: #0000b0;">type</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">hasValue</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Admin</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -202,11 +202,11 @@ cardinality. In our example graph, <code>:admin_user</code>, <code>:user_b</code
 satisfy <code>:authorizedUserShape</code>. Note that it is different from writing:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">altAuthorizedUserShape</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">PropertyShape</span> <span style="color: #5317ac;">;</span>
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">zeroOrMore</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">inverseProperty</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">approves</span> ] ] <span style="color: #5317ac;">;</span>
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">node</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">isAdminShape</span> <span style="color: #5317ac;">;</span>
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">minCount</span> 1 <span style="color: #5317ac;">;</span>
-  ] <span style="color: #5317ac;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">altAuthorizedUserShape</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">zeroOrMore</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inverseProperty</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> ] ] <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">node</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">isAdminShape</span> <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">minCount</span> 1 <span style="color: #531ab6;">;</span>
+  ] <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 <p>
@@ -224,9 +224,9 @@ set of value nodes. In our example graph, only <code>:admin_user</code> satisfie
 </div>
 
 
-<div id="outline-container-orgaccd861" class="outline-3">
-<h3 id="orgaccd861">Closed Constraint Component</h3>
-<div class="outline-text-3" id="text-orgaccd861">
+<div id="outline-container-org2f6aaef" class="outline-3">
+<h3 id="org2f6aaef">Closed Constraint Component</h3>
+<div class="outline-text-3" id="text-org2f6aaef">
 <p>
 Finally, another interesting feature is <i>closedness</i>. It states that
 only a select few properties are allowed for a focus node. These
@@ -238,8 +238,8 @@ shape: the set of non-blank nodes obtained by following the
 following triples:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">basicUserShape</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">closed</span> true <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">ignoredProperties</span> ( <span style="color: #005a5f;">rdf:</span><span style="color: #0000c0;">type</span> ) <span style="color: #5317ac;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">basicUserShape</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">closed</span> true <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">ignoredProperties</span> ( <span style="color: #005f5f;">rdf:</span><span style="color: #0000b0;">type</span> ) <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -267,9 +267,9 @@ is also discussed there.
 </div>
 </div>
 
-<div id="outline-container-org69076f8" class="outline-2">
-<h2 id="org69076f8">Targeting</h2>
-<div class="outline-text-2" id="text-org69076f8">
+<div id="outline-container-org98dcd3e" class="outline-2">
+<h2 id="org98dcd3e">Targeting</h2>
+<div class="outline-text-2" id="text-org98dcd3e">
 <p>
 A set of shape definitions on its own does not allow us to validate a
 graph in SHACL. Every shape can have a <i>target declaration</i> associated
@@ -292,7 +292,7 @@ We can add target declarations to the shapes from the previous section
 to make a complete shapes graph. Adding the Subjects-of target triple
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">authorizedUserShape</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">targetSubjectsOf</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">approves</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">authorizedUserShape</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">targetSubjectsOf</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span>
 </pre>
 </div>
 <p>
@@ -323,7 +323,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2024-05-29 Wed 11:24.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15). Last updated: 2024-05-29 Wed 11:24.
 </div>
 </footer>
 </div>

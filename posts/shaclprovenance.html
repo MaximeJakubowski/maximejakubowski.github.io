@@ -1,37 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2024-06-01 Sat 14:33 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 2024-10-15 Tue 11:41 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Provenance and SHACL</title>
-<meta name="generator" content="Org mode">
-<meta name="author" content="Maxime Jakubowski">
+<meta name="author" content="Maxime Jakubowski" />
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" href="/css/style.css"
 type="text/css"/><meta name="google-site-verification"
 content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        displayAlign: "center",
-        displayIndent: "0em",
-
-        "HTML-CSS": { scale: 100,
-                        linebreaks: { automatic: "false" },
-                        webFont: "TeX"
-                       },
-        SVG: {scale: 100,
-              linebreaks: { automatic: "false" },
-              font: "TeX"},
-        NativeMML: {scale: 100},
-        TeX: { equationNumbers: {autoNumber: "AMS"},
-               MultLineWidth: "85%",
-               TagSide: "right",
-               TagIndent: ".8em"
-             }
-});
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
 </script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -40,7 +50,7 @@ content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
 <ul><li><a href="/">Home</a></li></ul>
 </nav>
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Provenance and SHACL</h1>
 </header><div id="phdbox">
@@ -99,27 +109,27 @@ generalized for shapes graphs (including target declarations) as
 opposed to just shapes.
 </p>
 
-<div id="outline-container-org469f58d" class="outline-2">
-<h2 id="org469f58d">Neighborhoods by example</h2>
-<div class="outline-text-2" id="text-org469f58d">
+<div id="outline-container-org842d104" class="outline-2">
+<h2 id="org842d104">Neighborhoods by example</h2>
+<div class="outline-text-2" id="text-org842d104">
 <p>
 We will use the following data graph for our examples:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_a</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Admin</span><span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #005a5f;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Admin</span><span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #005f5f;">.</span>
 
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Admin</span><span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #005a5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Admin</span><span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource2</span> <span style="color: #005f5f;">.</span>
 
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">User</span><span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #005a5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">User</span><span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource2</span> <span style="color: #005f5f;">.</span>
 
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Resource</span> <span style="color: #005a5f;">.</span>
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Resource</span> <span style="color: #5317ac;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Resource</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource2</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Resource</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -129,12 +139,12 @@ accessed by at least one user (or admin):
 </p>
 
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">standardResource</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">class</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Resource</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">inversePath</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> ] <span style="color: #5317ac;">;</span>
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">minCount</span> 1 <span style="color: #5317ac;">;</span>
-  ] <span style="color: #5317ac;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">standardResource</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">class</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Resource</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">property</span> [
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inversePath</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> ] <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">minCount</span> 1 <span style="color: #531ab6;">;</span>
+  ] <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -153,10 +163,10 @@ as:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">Resource</span> <span style="color: #005a5f;">.</span>
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #005a5f;">.</span>
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #005a5f;">.</span>
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource1</span> <span style="color: #5317ac;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Resource</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -174,12 +184,12 @@ unpopular resources as resources that are accessed by at most two
 users:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">unpopularResource</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">class</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">inversePath</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> ] <span style="color: #5317ac;">;</span>
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">maxCount</span> 2 <span style="color: #5317ac;">;</span>
-  ] <span style="color: #5317ac;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">unpopularResource</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">class</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">property</span> [
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inversePath</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> ] <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">maxCount</span> 2 <span style="color: #531ab6;">;</span>
+  ] <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -198,15 +208,15 @@ sufficiency. We will demonstrate a similar situation with a slightly
 more complex shape containing the same ideas:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">specialResource</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">NodeShape</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">class</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource</span> <span style="color: #5317ac;">;</span>
-  <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">property</span> [
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">path</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">inversePath</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> ]
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">specialResource</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">class</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource</span> <span style="color: #531ab6;">;</span>
+  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">property</span> [
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inversePath</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> ]
 
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">minCount</span> 1 <span style="color: #5317ac;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">minCount</span> 1 <span style="color: #531ab6;">;</span>
 
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedValueShape</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">not</span> [ <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">class</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">admin</span> ]] <span style="color: #5317ac;">;</span>
-    <span style="color: #005a5f;">sh:</span><span style="color: #0000c0;">qualifiedMaxCount</span> 1 <span style="color: #5317ac;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">not</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">class</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin</span> ]] <span style="color: #531ab6;">;</span>
+    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMaxCount</span> 1 <span style="color: #531ab6;">;</span>
   ]
 </pre>
 </div>
@@ -228,10 +238,10 @@ It is clear from the previous discussion that the neighborhood at
 least includes the following:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource</span> <span style="color: #005a5f;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource2</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource</span> <span style="color: #005f5f;">.</span>
 
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #005a5f;">.</span>
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #5317ac;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource2</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource2</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -241,7 +251,7 @@ the qualified max count? To include what is mentioned in the shape
 would result in adding the following triple to the neighborhood:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #5317ac;">a</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">user</span> <span style="color: #5317ac;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -258,8 +268,8 @@ contain all necessary information to decide conformance, even when
 other parts of the graph are added. Indeed, adding the triples
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_b</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #005a5f;">.</span>
-<span style="color: #005a5f;">:</span><span style="color: #0000c0;">user_c</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">accesses</span> <span style="color: #005a5f;">:</span><span style="color: #0000c0;">resource2</span> <span style="color: #5317ac;">.</span>
+<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource2</span> <span style="color: #005f5f;">.</span>
+<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource2</span> <span style="color: #531ab6;">.</span>
 </pre>
 </div>
 
@@ -281,9 +291,9 @@ two design principles: determinism and minimality.
 </div>
 </div>
 
-<div id="outline-container-org4818589" class="outline-2">
-<h2 id="org4818589">Shape Fragments</h2>
-<div class="outline-text-2" id="text-org4818589">
+<div id="outline-container-orga09c529" class="outline-2">
+<h2 id="orga09c529">Shape Fragments</h2>
+<div class="outline-text-2" id="text-orga09c529">
 <p>
 This definition of neighborhoods can be viewed as an additional
 semantics for SHACL defining a retrieval mechanism. We call these
@@ -327,7 +337,7 @@ CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4). Last updated: 2024-05-29 Wed 11:18.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15). Last updated: 2024-05-29 Wed 11:18.
 </div>
 </footer>
 </div>
