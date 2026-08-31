@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2024-11-20 Wed 09:01 -->
+<!-- 2026-08-31 Mon 16:01 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Recursion for SHACL</title>
 <meta name="author" content="Maxime Jakubowski" />
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" href="/css/style.css"
-type="text/css"/><meta name="google-site-verification"
-content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
+
+<link rel="stylesheet" href="/css/style.css" type="text/css"/>
+<meta name="google-site-verification"
+      content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
 </head>
 <body>
 <div id="preamble" class="status">
@@ -55,10 +56,9 @@ discuss the different semantics without defining them first. The
 different semantics are: Supported Model semantics, Stratified
 Recursion, Stable Model semantics, and Well-Founded semantics.
 </p>
-
-<div id="outline-container-org82cdbed" class="outline-2">
-<h2 id="org82cdbed">Setting the stage</h2>
-<div class="outline-text-2" id="text-org82cdbed">
+<div id="outline-container-org0530909" class="outline-2">
+<h2 id="org0530909">Setting the stage</h2>
+<div class="outline-text-2" id="text-org0530909">
 <p>
 This post will use a running example to illustrate the different
 semantics. Consider an access control setting, where users can be
@@ -82,27 +82,26 @@ introduce our own local prefix, <code>@prefix :
 </p>
 </div>
 </div>
-
-<div id="outline-container-org81e2c1c" class="outline-2">
-<h2 id="org81e2c1c">Positive recursion</h2>
-<div class="outline-text-2" id="text-org81e2c1c">
+<div id="outline-container-orgc91a9dc" class="outline-2">
+<h2 id="orgc91a9dc">Positive recursion</h2>
+<div class="outline-text-2" id="text-orgc91a9dc">
 <p>
 A shape is said to be recursive if it references itself (directly,
 or indirectly). Consider the following access control shapes graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">or</span> (
-    [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
-      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">hasValue</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin</span>
-    ]
-    [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
-      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inversePath</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> ] <span style="color: #531ab6;">;</span>
-      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #531ab6;">;</span>
-      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1
-    ]
-  ) <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">targetSubjectsOf</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #531ab6;">.</span>
+<pre class="src src-ttl">:Authorized a sh:NodeShape ;
+  sh:or (
+        [ a sh:NodeShape ;
+          sh:hasValue :admin
+        ]
+        [ a sh:PropertyShape ;
+          sh:path [ sh:inversePath :approves ] ;
+          sh:qualifiedValueShape :Authorized ;
+          sh:qualifiedMinCount 1
+        ]
+  ) .
+:Authorized sh:targetSubjectsOf :accesses .
 </pre>
 </div>
 <p>
@@ -128,17 +127,16 @@ later in this post.
 </p>
 </div>
 </div>
-
-<div id="outline-container-org4bc5247" class="outline-2">
-<h2 id="org4bc5247">Semantics for positive recursion</h2>
-<div class="outline-text-2" id="text-org4bc5247">
+<div id="outline-container-org419272d" class="outline-2">
+<h2 id="org419272d">Semantics for positive recursion</h2>
+<div class="outline-text-2" id="text-org419272d">
 <p>
 Consider the following data graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #531ab6;">.</span>
+<pre class="src src-ttl">:admin :approves :user_a .
+:user_b :approves :user_c .
+:user_c :approves :user_b .
 </pre>
 </div>
 <p>
@@ -179,7 +177,7 @@ targeting for a moment. Consider the following addition to the data
 graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #531ab6;">.</span>
+<pre class="src src-ttl">:user_b :accesses :resource1 .
 </pre>
 </div>
 <p>
@@ -204,22 +202,21 @@ graph validates.
 </p>
 </div>
 </div>
-
-<div id="outline-container-orge4ab222" class="outline-2">
-<h2 id="orge4ab222">Adding negation</h2>
-<div class="outline-text-2" id="text-orge4ab222">
+<div id="outline-container-orgd0d5a8a" class="outline-2">
+<h2 id="orgd0d5a8a">Adding negation</h2>
+<div class="outline-text-2" id="text-orgd0d5a8a">
 <p>
 We will add some negation. Consider the following addition to the
 shapes graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">PotentialThreat</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">property</span> [
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #531ab6;">;</span>
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">minCount</span> 1
-    ] <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">not</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">PotentialThreat</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">targetClass</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">BlacklistedUser</span> <span style="color: #531ab6;">.</span>
+<pre class="src src-ttl">:PotentialThreat a sh:NodeShape ;
+  sh:property [
+        sh:path :accesses ;
+        sh:minCount 1
+        ] ;
+  sh:not :Authorized .
+:PotentialThreat sh:targetClass :BlacklistedUser .
 </pre>
 </div>
 <p>
@@ -234,14 +231,14 @@ are a <code>:PotentialThreat</code>. We want to ensure that all users that are a
 Considering the following data graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">.</span>
+<pre class="src src-ttl">:admin :approves :user_a .
+:user_b :approves :user_c .
+:user_c :approves :user_b .
 
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #005f5f;">.</span>
+:user_b :accesses :resource1 .
+:user_c :accesses :resource1 .
 
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">BlacklistedUser</span> <span style="color: #531ab6;">.</span>
+:user_b a :BlacklistedUser .
 </pre>
 </div>
 <p>
@@ -284,36 +281,35 @@ suitable semantics for recursive SHACL.
 </p>
 </div>
 </div>
-
-<div id="outline-container-org90499be" class="outline-2">
-<h2 id="org90499be">We can not always stratify easily</h2>
-<div class="outline-text-2" id="text-org90499be">
+<div id="outline-container-orgbdd8e96" class="outline-2">
+<h2 id="orgbdd8e96">We can not always stratify easily</h2>
+<div class="outline-text-2" id="text-orgbdd8e96">
 <p>
 Indeed, we cannot always stratify easily as discussed
 above. Consider a new shapes graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">or</span> (
-    [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
-      <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">hasValue</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin</span>
-    ]
-    [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">and</span> (
-        [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
-          <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inversePath</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> ] <span style="color: #531ab6;">;</span>
-          <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #531ab6;">;</span>
-          <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1
+<pre class="src src-ttl">:Authorized a sh:NodeShape ;
+  sh:or (
+        [ a sh:NodeShape ;
+          sh:hasValue :admin
         ]
-        [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">not</span> [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
-                   <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inversePath</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">reports</span> ] <span style="color: #531ab6;">;</span>
-                   <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #531ab6;">;</span>
-                   <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1
-                 ]
+        [ sh:and (
+            [ a sh:PropertyShape ;
+              sh:path [ sh:inversePath :approves ] ;
+              sh:qualifiedValueShape :Authorized ;
+              sh:qualifiedMinCount 1
+            ]
+            [ sh:not [ a sh:PropertyShape ;
+                       sh:path [ sh:inversePath :reports ] ;
+                       sh:qualifiedValueShape :Authorized ;
+                       sh:qualifiedMinCount 1
+                     ]
+            ]
+         )
         ]
-     )
-    ]
-  ) <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">Authorized</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">targetSubjectsOf</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #531ab6;">.</span>
+  ) .
+:Authorized sh:targetSubjectsOf :accesses .
 </pre>
 </div>
 <p>
@@ -328,10 +324,10 @@ Note that this shape cannot be stratified as we did with the
 negatively. We will next look at the following data graph scenario:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_d</span> <span style="color: #531ab6;">.</span>
+<pre class="src src-ttl">:admin :approves :user_a ;
+  :approves :user_b .
+:user_a :approves :user_c .
+:user_c :approves :user_d .
 </pre>
 </div>
 <p>
@@ -341,7 +337,7 @@ nothing special going on as long as we do not have anyone reporting
 anyone. We will add the following line:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">reports</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #531ab6;">.</span>
+<pre class="src src-ttl">:user_b :reports :user_c .
 </pre>
 </div>
 <p>
@@ -350,8 +346,8 @@ Now, because <code>:user_c</code> has been reported, they are no longer
 explicitly reported. All this the semantics agree on. But what if we add:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">reports</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">reports</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #531ab6;">.</span>
+<pre class="src src-ttl">:user_a :reports :user_b .
+:user_b :reports :user_a .
 </pre>
 </div>
 <p>
@@ -376,10 +372,9 @@ example, it will say the assignment of <code>:Authorized</code> for <code>:user_
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgf433dd3" class="outline-2">
-<h2 id="orgf433dd3">Concluding thoughts</h2>
-<div class="outline-text-2" id="text-orgf433dd3">
+<div id="outline-container-org16d7bcb" class="outline-2">
+<h2 id="org16d7bcb">Concluding thoughts</h2>
+<div class="outline-text-2" id="text-org16d7bcb">
 <p>
 The ideas can be summarized as follows. First, Stratified Recursion
 is the only approach that somehow restricts the kinds of recursion
@@ -426,20 +421,20 @@ suggestions.
 <footer>
 <div class="copyright-container">
 <div class="copyright">
-Copyright &copy; 2020-2023 Maxime Jakubowski some rights reserved<br/>
+Copyright &copy; 2020-2026 Maxime Jakubowski some rights reserved<br/>
 Content is available under
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
 CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 <div class="cc-badge">
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
 <img alt="Creative Commons License"
      src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
 </a>
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15). Last updated: 2024-05-29 Wed 11:17.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Last updated: 2026-08-31 Mon 15:57.
 </div>
 </footer>
 </div>

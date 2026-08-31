@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2026-08-31 Mon 16:01 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Validating RDF with RDF</title>
+<meta name="author" content="Maxime" />
+<meta name="generator" content="Org Mode" />
+
+<link rel="stylesheet" href="/css/style.css" type="text/css"/>
+<meta name="google-site-verification"
+      content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
+</head>
+<body>
+<div id="preamble" class="status">
+
+<nav id="post-home">
+<ul><li><a href="/">Home</a></li></ul>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Validating RDF with RDF</h1>
+</header><p>
+One of the questions that kept me busy during my journey on
+understanding RDF, was the relationship between what I now call the
+<i>knowledge representation</i> view on RDF, and the <i>data management</i> view on
+RDF. In this post, I'll lay out my understanding between the two
+views, and some insights based on this understanding, in particular
+in context of <a href="phd.html">my specialty</a>, validation and SHACL.
+</p>
+
+<p>
+Let's start with examining what an RDF triple is exactly. Consider the
+following RDF triple:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl">:maxime :likes :chilly_gonzales
+</pre>
+</div>
+<p>
+According to RDF 1.1 Semantics, we can associate an <i>interpretation</i> to
+this small RDF graph which interprets the tuple <code>(:maxime,
+:chilly\_gonzales)</code> as part of the <code>:likes</code> relation.
+</p>
+
+<p>
+RDF 1.1 interpretations are a complex structure, it allows for special
+interpretation of some triples, like for example:
+</p>
+<div class="org-src-container">
+<pre class="src src-ttl">:chilly_gonzales rdf:type :musician
+</pre>
+</div>
+<p>
+which should be interpreted as <code>:chilly\_gonzales</code> being part of the
+extension of the class <code>:musician</code>. There are other such special
+interpretations of RDF triples, but this gives you the basic idea.
+</p>
+
+<p>
+In this sense, every RDF triple can be seen as a logical statement,
+which we can associate an interpretation with. This is then extended
+to RDFS and OWL.
+</p>
+
+<p>
+However, SHACL and SPARQL view things differently.
+</p>
+<div id="outline-container-orge62ff37" class="outline-2">
+<h2 id="orge62ff37">Concluding Remarks</h2>
+<div class="outline-text-2" id="text-orge62ff37">
+<p>
+I should stress that this post expresses my understanding of the
+situation, and I'll happily address any misconceptions that I might
+have unwittingly expressed here. 
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="copyright-container">
+<div class="copyright">
+Copyright &copy; 2020-2026 Maxime Jakubowski some rights reserved<br/>
+Content is available under
+<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+CC-BY-SA 4.0</a> unless otherwise noted
+</div>
+<div class="cc-badge">
+<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License"
+     src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+</a>
+</div>
+</div>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Last updated: 2026-08-31 Mon 15:57.
+</div>
+</footer>
+</div>
+</body>
+</html>

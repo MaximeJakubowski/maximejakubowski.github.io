@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2024-11-20 Wed 09:01 -->
+<!-- 2026-08-31 Mon 16:01 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SHACL in a nutshell</title>
 <meta name="author" content="Maxime Jakubowski" />
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" href="/css/style.css"
-type="text/css"/><meta name="google-site-verification"
-content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
+
+<link rel="stylesheet" href="/css/style.css" type="text/css"/>
+<meta name="google-site-verification"
+      content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
 </head>
 <body>
 <div id="preamble" class="status">
@@ -49,10 +50,9 @@ called <i>conformance checking</i> and it is done by software called a
 not only check for conformance, but to also generate a <i>validation
 report</i> specifying which nodes violate which parts of the shapes graph.
 </p>
-
-<div id="outline-container-org5658b30" class="outline-2">
-<h2 id="org5658b30">Shapes</h2>
-<div class="outline-text-2" id="text-org5658b30">
+<div id="outline-container-orgdbdb8fa" class="outline-2">
+<h2 id="orgdbdb8fa">Shapes</h2>
+<div class="outline-text-2" id="text-orgdbdb8fa">
 <p>
 A SHACL shapes graph consists of a set of <i>shapes</i> which are structural
 constraints on nodes. Shapes have a name which is a blank node or an
@@ -74,18 +74,18 @@ while power users can also add users to the system and approve of them
 to also become power users. Consider the following data graph:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">admin_user</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Admin</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">adds</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">adds</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">.</span>
+<pre class="src src-ttl">:admin_user a :Admin ;
+  :adds :user_a ;
+  :adds :user_b ;
+  :approves :user_b .
 
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">adds</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">.</span>
+:user_b :adds :user_c ;
+  :approves :user_c .
 
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_a</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_b</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #005f5f;">.</span>
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">user_c</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource1</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">:</span><span style="color: #0000b0;">creates</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">resource2</span> <span style="color: #531ab6;">.</span>
+:user_a :accesses :resource1 .
+:user_b :accesses :resource1 .
+:user_c :accesses :resource1 ;
+  :creates :resource2 .
 </pre>
 </div>
 
@@ -100,16 +100,16 @@ Consider the following node shape that consists of one node test and
 two property shapes:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">basicUserShape</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">nodeKind</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">IRI</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">property</span> [
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">accesses</span> <span style="color: #531ab6;">;</span>
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">minCount</span> 1
-  ] <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">property</span> [
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">creates</span> <span style="color: #531ab6;">;</span>
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">maxCount</span> 0
-  ] <span style="color: #531ab6;">.</span>
+<pre class="src src-ttl">:basicUserShape a sh:NodeShape ;
+  sh:nodeKind sh:IRI ;
+  sh:property [
+        sh:path :accesses ;
+        sh:minCount 1
+  ] ;
+  sh:property [
+        sh:path :creates ;
+        sh:maxCount 0
+  ] .
 </pre>
 </div>
 
@@ -140,10 +140,9 @@ Next follows some examples of some of the components
 that illustrate the capabilities of SHACL.
 </p>
 </div>
-
-<div id="outline-container-org391fb8d" class="outline-3">
-<h3 id="org391fb8d">Property Pair Constraint Components</h3>
-<div class="outline-text-3" id="text-org391fb8d">
+<div id="outline-container-orgb1c9cf9" class="outline-3">
+<h3 id="orgb1c9cf9">Property Pair Constraint Components</h3>
+<div class="outline-text-3" id="text-orgb1c9cf9">
 <p>
 In property shapes, we can compare the value nodes to another set
 of nodes (reachable by some other property) in some predefined
@@ -151,10 +150,10 @@ ways. The most important are <i>equality</i> and <i>disjointness</i> checks betw
 the two sets.  Consider the following node shape:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">powerUserShape</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">not</span> [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
-             <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">adds</span> <span style="color: #531ab6;">;</span>
-             <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">disjoint</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> ] <span style="color: #531ab6;">.</span>
+<pre class="src src-ttl">:powerUserShape a sh:NodeShape ;
+         sh:not [ a sh:PropertyShape ;
+                  sh:path :adds ;
+                  sh:disjoint :approves ] .
 </pre>
 </div>
 
@@ -168,10 +167,9 @@ satisfy <code>:powerUserShape</code>.
 </p>
 </div>
 </div>
-
-<div id="outline-container-org9c6fa89" class="outline-3">
-<h3 id="org9c6fa89">Shape-based Constraint Components</h3>
-<div class="outline-text-3" id="text-org9c6fa89">
+<div id="outline-container-orgbed2b5a" class="outline-3">
+<h3 id="orgbed2b5a">Shape-based Constraint Components</h3>
+<div class="outline-text-3" id="text-orgbed2b5a">
 <p>
 We can refer to other shapes as well. Most notably, we can combine
 this with the counting from the cardinality constraint components to
@@ -179,15 +177,15 @@ count only value nodes that conform to some other given shape. For
 example, consider the
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">authorizedUserShape</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">zeroOrMore</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inverseProperty</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> ] ] <span style="color: #531ab6;">;</span>
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedValueShape</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">isAdminShape</span> <span style="color: #531ab6;">;</span>
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">qualifiedMinCount</span> 1 <span style="color: #531ab6;">;</span>
-  ] <span style="color: #005f5f;">.</span>
+<pre class="src src-ttl">:authorizedUserShape a sh:PropertyShape ;
+    sh:path [ sh:zeroOrMore [ sh:inverseProperty :approves ] ] ;
+    sh:qualifiedValueShape :isAdminShape ;
+    sh:qualifiedMinCount 1 ;
+  ] .
 
-<span style="color: #005f5f;">:</span><span style="color: #0000b0;">isAdminShape</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #005f5f;">rdf:</span><span style="color: #0000b0;">type</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">hasValue</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">Admin</span> <span style="color: #531ab6;">.</span>
+:isAdminShape a sh:PropertyShape ;
+  sh:path rdf:type ;
+  sh:hasValue :Admin .
 </pre>
 </div>
 
@@ -202,11 +200,11 @@ cardinality. In our example graph, <code>:admin_user</code>, <code>:user_b</code
 satisfy <code>:authorizedUserShape</code>. Note that it is different from writing:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">altAuthorizedUserShape</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">zeroOrMore</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">inverseProperty</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span> ] ] <span style="color: #531ab6;">;</span>
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">node</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">isAdminShape</span> <span style="color: #531ab6;">;</span>
-    <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">minCount</span> 1 <span style="color: #531ab6;">;</span>
-  ] <span style="color: #531ab6;">.</span>
+<pre class="src src-ttl">:altAuthorizedUserShape a sh:PropertyShape ;
+    sh:path [ sh:zeroOrMore [ sh:inverseProperty :approves ] ] ;
+    sh:node :isAdminShape ;
+    sh:minCount 1 ;
+  ] .
 </pre>
 </div>
 <p>
@@ -222,11 +220,9 @@ set of value nodes. In our example graph, only <code>:admin_user</code> satisfie
 </p>
 </div>
 </div>
-
-
-<div id="outline-container-org99717ca" class="outline-3">
-<h3 id="org99717ca">Closed Constraint Component</h3>
-<div class="outline-text-3" id="text-org99717ca">
+<div id="outline-container-org6ec1223" class="outline-3">
+<h3 id="org6ec1223">Closed Constraint Component</h3>
+<div class="outline-text-3" id="text-org6ec1223">
 <p>
 Finally, another interesting feature is <i>closedness</i>. It states that
 only a select few properties are allowed for a focus node. These
@@ -238,8 +234,8 @@ shape: the set of non-blank nodes obtained by following the
 following triples:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">basicUserShape</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">closed</span> true <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">ignoredProperties</span> ( <span style="color: #005f5f;">rdf:</span><span style="color: #0000b0;">type</span> ) <span style="color: #531ab6;">.</span>
+<pre class="src src-ttl">:basicUserShape sh:closed true ;
+  sh:ignoredProperties ( rdf:type ) .
 </pre>
 </div>
 
@@ -266,10 +262,9 @@ is also discussed there.
 </div>
 </div>
 </div>
-
-<div id="outline-container-org9eabffe" class="outline-2">
-<h2 id="org9eabffe">Targeting</h2>
-<div class="outline-text-2" id="text-org9eabffe">
+<div id="outline-container-orgde39013" class="outline-2">
+<h2 id="orgde39013">Targeting</h2>
+<div class="outline-text-2" id="text-orgde39013">
 <p>
 A set of shape definitions on its own does not allow us to validate a
 graph in SHACL. Every shape can have a <i>target declaration</i> associated
@@ -292,7 +287,7 @@ We can add target declarations to the shapes from the previous section
 to make a complete shapes graph. Adding the Subjects-of target triple
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">authorizedUserShape</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">targetSubjectsOf</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">approves</span>
+<pre class="src src-ttl">:authorizedUserShape :targetSubjectsOf :approves
 </pre>
 </div>
 <p>
@@ -310,20 +305,20 @@ longer conform, as <code>:user_a</code> does not satisfy <code>:authorizedUserSh
 <footer>
 <div class="copyright-container">
 <div class="copyright">
-Copyright &copy; 2020-2023 Maxime Jakubowski some rights reserved<br/>
+Copyright &copy; 2020-2026 Maxime Jakubowski some rights reserved<br/>
 Content is available under
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
 CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 <div class="cc-badge">
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
 <img alt="Creative Commons License"
      src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
 </a>
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15). Last updated: 2024-05-29 Wed 11:24.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Last updated: 2026-08-31 Mon 15:57.
 </div>
 </footer>
 </div>

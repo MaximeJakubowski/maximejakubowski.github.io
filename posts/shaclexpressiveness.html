@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2024-11-20 Wed 09:01 -->
+<!-- 2026-08-31 Mon 16:01 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Expressiveness of SHACL Features</title>
 <meta name="author" content="Maxime Jakubowski" />
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" href="/css/style.css"
-type="text/css"/><meta name="google-site-verification"
-content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
+
+<link rel="stylesheet" href="/css/style.css" type="text/css"/>
+<meta name="google-site-verification"
+      content="QckFGyLPcF5LDUcG9_PH0H9SDnjb6cuI4IzN7PqIOLM" />
 </head>
 <body>
 <div id="preamble" class="status">
@@ -52,8 +53,8 @@ express it using other constraint components. For example, given an
 IRI <code>:c</code> every shape of the form:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">class</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">c</span>
+<pre class="src src-ttl">[ a sh:NodeShape ;
+  sh:class :c
 ]
 </pre>
 </div>
@@ -62,9 +63,9 @@ IRI <code>:c</code> every shape of the form:
 can be written as the shape:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl">[ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> ( [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">zeroOrMorePath</span> <span style="color: #005f5f;">rdfs:</span><span style="color: #0000b0;">subClassOf</span> ] <span style="color: #005f5f;">rdf:</span><span style="color: #0000b0;">type</span> ) <span style="color: #531ab6;">;</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">hasValue</span> <span style="color: #005f5f;">:</span><span style="color: #0000b0;">c</span>
+<pre class="src src-ttl">[ a sh:PropertyShape ;
+  sh:path ( [ sh:zeroOrMorePath rdfs:subClassOf ] rdf:type ) ;
+  sh:hasValue :c
 ]
 </pre>
 </div>
@@ -103,11 +104,11 @@ node, to the focus node. In other words, there may not be a self-loop
 expressed with the shape:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl"><span style="color: #005f5f;">:</span><span style="color: #0000b0;">noLoop</span> <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">NodeShape</span>
-  <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">not</span> [ <span style="color: #531ab6;">a</span> <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">PropertyShape</span> <span style="color: #531ab6;">;</span>
-           <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">path</span> <span style="color: #721045;">&lt;path&gt;</span> <span style="color: #531ab6;">;</span>
-           <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">equals</span> [ <span style="color: #005f5f;">sh:</span><span style="color: #0000b0;">zeroOrOnePath</span> <span style="color: #721045;">&lt;path&gt;</span> ]
-         ] <span style="color: #531ab6;">.</span>
+<pre class="src src-ttl">:noLoop a sh:NodeShape
+  sh:not [ a sh:PropertyShape ;
+           sh:path &lt;path&gt; ;
+           sh:equals [ sh:zeroOrOnePath &lt;path&gt; ]
+         ] .
 </pre>
 </div>
 
@@ -133,20 +134,20 @@ that feature.
 <footer>
 <div class="copyright-container">
 <div class="copyright">
-Copyright &copy; 2020-2023 Maxime Jakubowski some rights reserved<br/>
+Copyright &copy; 2020-2026 Maxime Jakubowski some rights reserved<br/>
 Content is available under
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
 CC-BY-SA 4.0</a> unless otherwise noted
 </div>
 <div class="cc-badge">
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
 <img alt="Creative Commons License"
      src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
 </a>
 </div>
 </div>
 <div class="generated">
-Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15). Last updated: 2024-05-29 Wed 11:17.
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Last updated: 2026-08-31 Mon 15:57.
 </div>
 </footer>
 </div>
